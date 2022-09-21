@@ -39,11 +39,12 @@ class Mensagem:
 
 
 
-    def enviar(self, msg, vezes):
+    def enviar(self, msg, vezes, ctt):
 
-        for i in range(vezes):
-            self.driver.get(f'https://web.whatsapp.com/send?phone=5547988314131&text={msg + str(i)}')
-            WebDriverWait(driver=self.driver, timeout=10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')))
+        for i in range(1 ,vezes):
+            msg = f'https://web.whatsapp.com/send?phone={ctt}&text={msg + str(i)}'
+            self.driver.get(msg)
+            WebDriverWait(driver=self.driver, timeout=100).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')))
             self.driver.find_element(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button').click()
             sleep(2)
             print(self.driver.find_element(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div').get_attribute('value'))
@@ -109,9 +110,9 @@ class Mensagem:
 # conexao = sqlite3.connect('localContent.db')
 # cursor = conexao.cursor()
 
-msg = Mensagem('11', '00')
-
-msg.enviar('', 2)
+# msg = Mensagem('11', '00')
+#
+# msg.enviar('', 2, )
 
 
 # cursor.close()

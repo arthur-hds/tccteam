@@ -25,14 +25,9 @@ class Janela(QMainWindow):
         self.mensagem.move(265, 300)
         self.mensagem.resize(300, 40)
 
-        self.hora = QLineEdit(self)
-        self.hora.setStyleSheet('QLineEdit {background-color: #FFFFFF}')
-        self.hora.move(265, 400)
-        self.hora.resize(300, 40)
-
         self.qnt = QLineEdit(self)
         self.qnt.setStyleSheet('QLineEdit {background-color: #FFFFFF}')
-        self.qnt.move(265, 500)
+        self.qnt.move(265, 400)
         self.qnt.resize(300, 40)
 
         botao = QPushButton('Enviar Mensagem', self)
@@ -67,18 +62,10 @@ class Janela(QMainWindow):
             'border: 1px}')
         label2.setAlignment(QtCore.Qt.AlignCenter)
 
-        label3 = QLabel(self)
-        label3.setText("Hora de envio:")
-        label3.move(285, 350)
-        label3.resize(150, 30)
-        label3.setStyleSheet(
-            'QLabel {font: 15px;font-family: Courier, monospace; background-color: #a2c0ff; border-radius: 5px; '
-            'border: 1px}')
-        label3.setAlignment(QtCore.Qt.AlignCenter)
 
         label4 = QLabel(self)
         label4.setText("Quantidade de envio:")
-        label4.move(285, 450)
+        label4.move(285, 350)
         label4.resize(220, 30)
         label4.setStyleSheet(
             'QLabel {font: 15px;font-family: Courier, monospace; background-color: #a2c0ff; border-radius: 5px; '
@@ -93,7 +80,12 @@ class Janela(QMainWindow):
         self.show()
 
     def MandarMensagem(self):
-       print("Vai se foder")
+        NMsg = Mensagem('11', '00')
+        NMsg.enviar(self.mensagem.text(), int(self.qnt.text()), int(self.contato.text()))
+        # print(self.contato.text())
+        print(self.mensagem.text())
+
+
 
 
 aplicacao = QApplication(sys.argv)
