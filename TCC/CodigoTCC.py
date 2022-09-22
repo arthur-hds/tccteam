@@ -17,10 +17,11 @@ class Mensagem:
         self.driver = webdriver.Chrome()
         self.horas = horas
         self.minutos = minutos
+        self.options = webdriver.ChromeOptions()
 
 
 
-
+        self.options.add_argument(f'user-data-dir=C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data')
 
         # driver.get("https://www.hardware.com.br/comunidade/notebook-internet/1316476/")
         self.driver.get("https://web.whatsapp.com/")
@@ -110,7 +111,7 @@ class Mensagem:
 # conexao = sqlite3.connect('localContent.db')
 # cursor = conexao.cursor()
 
-# msg = Mensagem('11', '00')
+msg = Mensagem('11', '00')
 #
 # msg.enviar('', 2, )
 
