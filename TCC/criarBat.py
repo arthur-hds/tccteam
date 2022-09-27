@@ -8,14 +8,15 @@ import os
 
 # try:
 #     subprocess.
-print(os.pathdir)
+# print(os.path)
 
 pasta = os.getcwd()
-
 print(pasta)
 
 
 pyDir = subprocess.run('where python', shell=True, capture_output=True, text=True)
+subprocess.run('where python', shell=True, capture_output=True, text=True)
+
 localArqPython = pyDir.stdout.split()[0]
 
 

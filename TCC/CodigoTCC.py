@@ -1,3 +1,5 @@
+import os
+
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium import webdriver
@@ -11,17 +13,16 @@ import datetime
 import sqlite3
 import subprocess
 
+
 class Mensagem:
 
-    def __init__(self, horas, minutos):
-        self.driver = webdriver.Chrome()
-        self.horas = horas
-        self.minutos = minutos
+    def __init__(self):
+
         self.options = webdriver.ChromeOptions()
-
-
-
         self.options.add_argument(f'user-data-dir=C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data')
+        self.driver = webdriver.Chrome(options=self.options)
+
+
 
         # driver.get("https://www.hardware.com.br/comunidade/notebook-internet/1316476/")
         self.driver.get("https://web.whatsapp.com/")
@@ -33,11 +34,6 @@ class Mensagem:
             EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
         print(esperar)
         sleep(3)
-
-    def criar_rotina(self):
-        # self.rotina = subprocess.run('schtasks /create /tn testeCMDbanana /tr "C:\\Users\\Usuario\\PycharmProjects\\TCC\\TCC\\test.bat" /sc once /st 11:00', shell=True, capture_output=True, text=True)
-        self.rotina = subprocess.run('where python', shell=True, capture_output=True, text=True)
-
 
 
     def enviar(self, msg, vezes, ctt):
@@ -52,57 +48,36 @@ class Mensagem:
             sleep(5)
         self.__quit()
 
+
     def __quit(self):
         self.driver.quit()
-    # def horario(ano, mes, dia, hora, minuto):
-    #     inicio = arrow.utcnow()
-    #     fim = arrow.Arrow(ano, mes, dia, hora, minuto, 5)
-    #     restante = fim - inicio
-    #     print(type(restante))
-    #     print(type(fim))
-    #     # if restante.format('DD') <= 0:
-    #     #     return None
-    #     print(inicio)
-    #     print(fim)
-    #     print(restante.)
-
-
-    # ElementoAchado = driver.find_element(By.XPATH, '//*[@id="pane-side"]/div[1]/div/div')
-    # valor = ElementoAchado.text
-    # valor2 = ElementoAchado.get_attribute('value')
-    # valor3 = ElementoAchado.get_attribute('innerHTML')
-    #
-    # bs = BeautifulSoup(valor3, 'html.parser')
-    # classesChats = bs.find_all('div', {'class':'_3GlyB'})
 
 
 
+class Agendar():
+    def __init__(self, horas, minutos):
+        self.horas = horas.strip()
+        self.minutos = minutos.strip()
 
 
+    def __horario(self):
+        minutos = 0
+        atual = arrow.now()
+        horario_usuario = arrow.Arrow(2022, 9, 26, int(self.horas), int(self.minutos))
 
-    # print(ElementoAchado)
-    # print(valor)
-    # print(valor2)
+        for tempo in arrow.Arrow.range(frame='minutes', tz=atual.tzinfo, start=atual, end=horario_usuario):
+            minutos += 1
 
+        envio_horas_minutos = horario_usuario.format('HH:mm')
 
-
-    # print(EC.presence_of_element_located((By.ID, 'headerMover')))
-
-    # html = driver.page_source
-
-
-    # bs = BeautifulSoup(html, 'html.parser')
-    #
-    # print(bs.find_all('div',{'class':'a_message_inline a_locala_not_simple'}))
-    #
-    #
-    # enviar('q cabelos lindos bb', 1)
-    # horario(2022, 10, 22, 5, 6)
+        return envio_horas_minutos, horario_usuario, minutos
 
 
-
-
-
+    def criar_rotina(self):
+        horario = self.__horario()[0]
+        pasta = os.getcwd()+'\RabiscoTCC.exe'
+        self.rotina = subprocess.run(f'schtasks /create /tn testeCMDbanana /tr "{pasta}" /sc once /st {horario}', shell=True, text=True)
+        # self.rotina = subprocess.run('where python', shell=True, capture_output=True, text=True)
 
 
 #--------------------------------------------------------------
@@ -111,8 +86,12 @@ class Mensagem:
 # conexao = sqlite3.connect('localContent.db')
 # cursor = conexao.cursor()
 
-msg = Mensagem('11', '00')
+ag = Agendar('21', '25')
+ag.criar_rotina()
+
 #
+
+
 # msg.enviar('', 2, )
 
 
