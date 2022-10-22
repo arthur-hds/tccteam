@@ -14,6 +14,8 @@ def horarios():
 
     horario_atual = atual.format('HH:mm')
     dia_atual = atual.format('DD')
+    mes_atual = atual.format('MM')
+
     # dia_atual = atual.format('DD/MM')
     # dia_semana = data_criado.shift(weeks=+1).format('DD/MM')
     # dia_mes = data_criado.shift(months=+1).format('DD/MM')
@@ -22,7 +24,7 @@ def horarios():
     # dia_atual = f"['{dia_atual}']"
     # dia_mes = f"['{dia_mes}']"
 
-    return horario_atual, dia_atual
+    return horario_atual, dia_atual, mes_atual
 
 
 
@@ -90,6 +92,7 @@ def extrairMensagensEnvio(cursor):
     try:
         for elemento in cursor.fetchall():
             elemento = list(elemento)
+
             __agendar(elemento, 'Envio', cursor)
             listaRetorno.append(elemento)
         return listaRetorno
@@ -179,6 +182,38 @@ def __agendar(elemento, tipo, cursor):
 
 
 
+def mensagensPassadas(cursor):
+
+    while True:
+        info = extrairMensagensEnvio(cursor)[0]
+        mes = info[2][2:4]
+        dia = info[2][5:7]
+
+        dia_int = int(f'{mes}{dia}')
+        dia_atual_int = int(f'{horarios()[2]}{horarios()[1]}')
+
+        if dia_atual_int >= dia_int:
+            hora = info[1][:2]
+            minuto = info[1][3:]
+            horario_int = int(int(f'{hora}{minuto}'))
+            horario_atual_int = int(horarios()[0][:2] + horarios()[0][3:])
+            if horario_atual_int > horario_int:
+                if info[9] == 'True':
+                    cursor.execute(
+                        'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente,'
+                        'contem_midia, data_criada, hora_criada, nome_rotina,'
+                        'executar_erro, status)'
+                        'VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+                        (info[0], horarios()[0], f"['{horarios()[2]}/{int(horarios()[1]) + 1}']", info[3], info[4],
+                         info[5],
+                         info[6], info[7], info[8], info[9], info[10]))
+
+                verificarDBNormal(cursor)
+            else:
+                break
+        else:
+            break
+
 
 
 
@@ -190,7 +225,10 @@ def atualizarDados(cursor):
     extrairMensagensSemanal(cursor)
     extrairMensagensMensal(cursor)
     extrairMensagensDiaria(cursor)
-
+    try:
+        mensagensPassadas(cursor)
+    except:
+        pass
 
 
 
@@ -228,11 +266,12 @@ def criarRotinaDiaria(cursor):
             __apagarRotina('OneTickMensagemDiaria')
             return None
 
+
     horario = info[1]
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\SendDaily.exe'
     print(pasta)
     print(horario)
 
@@ -259,7 +298,7 @@ def criarRotinaSemanal(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\SendSemanal.exe'
     print(pasta)
     print(horario)
 
@@ -285,7 +324,7 @@ def criarRotinaMensal(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\SendMensal.exe'
     print(pasta)
     print(horario)
 
@@ -303,13 +342,10 @@ def criarRotinaMensal(cursor):
 
 def criarRotinaNormal(cursor):
     try:
-        info = extrairMensagensEnvio(cursor)[1]
+        info = extrairMensagensEnvio(cursor)[0]
     except:
-        try:
-            info = extrairMensagensEnvio(cursor)[0]
-        except:
-            __apagarRotina('OneTickMensagemNormal')
-            return None
+        __apagarRotina('OneTickMensagemNormal')
+        return None
 
     horario = info[1]
     data = ast.literal_eval(info[2])[0]
@@ -349,7 +385,7 @@ def atualizarRotinaDiariaInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\SendDaily.exe'
     print(pasta)
     print(horario)
 
@@ -368,7 +404,7 @@ def atualizarRotinaSemanalInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\SendSemanal.exe'
     print(pasta)
     print(horario)
 
@@ -386,7 +422,7 @@ def atualizarRotinaMensalInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\SendMensal.exe'
     print(pasta)
     print(horario)
 
@@ -438,10 +474,10 @@ def verificarDBNormal(cursor):
     if extrairMensagensEnvio(cursor):
         filaMensagens = extrairMensagensEnvio(cursor)[0]
         print(filaMensagens)
-        cursor.execute('UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ?',
-                       (filaMensagens[0],filaMensagens[6], filaMensagens[7]))
+        cursor.execute('UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND dia = ? AND data_criada = ? AND hora_criada = ? AND nome_rotina = ?',
+                       (filaMensagens[0], filaMensagens[2], filaMensagens[6], filaMensagens[7], filaMensagens[8]))
 
-        cursor.execute('DELETE FROM Mensagens WHERE status = "ENVIADO" ')
+        cursor.execute('DELETE FROM Mensagens WHERE status = "ENVIADO" AND dia != "Diária" AND dia != "Semanal" AND dia != "Mensal"')
 
         criarRotinaNormal(cursor)
         return filaMensagens
@@ -456,6 +492,7 @@ def verificarDBNormal(cursor):
 
 def verificarDBDiaria(cursor):
     filaMensagens = extrairMensagensDiaria(cursor)[0]
+    print(filaMensagens)
     cursor.execute('SELECT * FROM Diaria WHERE status = "PENDENTE"')
     if not cursor.fetchall():
         cursor.execute(
@@ -465,8 +502,8 @@ def verificarDBDiaria(cursor):
     try:
         criarRotinaDiaria(cursor)
         cursor.execute(
-            'UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ?',
-            (filaMensagens[0], filaMensagens[6], filaMensagens[7]))
+            'UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ? AND nome_rotina = ?',
+            (filaMensagens[0], filaMensagens[6], filaMensagens[7], filaMensagens[8]))
     except:
         __apagarRotina('OneTickMensagemDiaria')
 
@@ -488,8 +525,8 @@ def verificarDBMensal(cursor):
     try:
         criarRotinaMensal(cursor)
         cursor.execute(
-            'UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ?',
-            (filaMensagens[0], filaMensagens[6], filaMensagens[7]))
+            'UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ? AND nome_rotina = ?',
+            (filaMensagens[0], filaMensagens[6], filaMensagens[7], filaMensagens[8]))
     except:
         __apagarRotina('OneTickMensagemMensal')
 
@@ -510,8 +547,8 @@ def verificarDBSemanal(cursor):
     try:
         criarRotinaSemanal(cursor)
         cursor.execute(
-            'UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ?',
-            (filaMensagens[0], filaMensagens[6], filaMensagens[7]))
+            'UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND data_criada = ? AND hora_criada = ? AND nome_rotina = ?',
+            (filaMensagens[0], filaMensagens[6], filaMensagens[7], filaMensagens[8]))
     except:
 
         __apagarRotina('OneTickMensagemSemanal')
@@ -559,6 +596,10 @@ def resetarRotinas(cursor):
 
 
 
+
+
+
+
 def extrairLogin():
     conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
     cursor = conexao.cursor()
@@ -578,12 +619,22 @@ def extrairLogin():
 
 
 
+def apagarTodasRotinas(cursor):
+    cursor.execute('DELETE FROM Mensagens')
+    criarRotinaNormal(cursor)
+    criarRotinaDiaria(cursor)
+    criarRotinaSemanal(cursor)
+    criarRotinaMensal(cursor)
+
+
+
+
 
 def atualizarLogin(cursor, numero):
     if numero == 1:
-        cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (numero, horario(), "rgb(85, 255, 127)"))
+        cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (numero, horarios()[0], "rgb(85, 255, 127)",))
     else:
-        cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (numero, horario(), "rgb(255, 0, 0)"))
+        cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (numero, horarios()[0], "rgb(255, 0, 0)",))
 
 
 
@@ -606,26 +657,15 @@ conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\loc
 cursor = conexao.cursor()
 #
 
+
+
 atualizarDados(cursor)
-# apagarRotinasInterface(cursor)
+# print(extrairMensagensEnvio(cursor))
+# apagarTodasRotinas(cursor)
 # atualizarRotinasInterface(cursor)
-# criarRotinaMensal(cursor)
-# extrairContatos(cursor)
-# atualizarRotinasInterface(cursor)
-# print(extrairMensagens(cursor))
-# atualizarLogin(cursor, 0)
-# verificarDBSemanal(cursor)
-# print(extrairLogin()[0])
-# print(horario())
-# print(extrairMensagens(cursor))
-# print(extrairMensagensDiaria(cursor))
+# verificarDBNormal(cursor)
 # verificarDBDiaria(cursor)
-# verificarDBMensal(cursor)
-# verificarDBDiaria(cursor)
-# print(extrairMensagensDiaria(cursor))
-# resetarRotinas(cursor)
-# resetarRotinas(cursor)
-# print(extrairMensagensDiaria(cursor))
+
 #
 conexao.commit()
 cursor.close()

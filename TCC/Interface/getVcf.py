@@ -11,7 +11,7 @@ def returnVcf(VcfPath):
         return 'ARQUIVO VCF ESTÁ COM PROBLEMA'
 # contatos = []
 
-# print(returnVcf(r'C:\Users\Usuario\Downloads\joilsonContatos.vcf'))
+# print(returnVcf(r'C:\Users\Usuario\Downloads\Contatos1.vcf'))
 #     contatos.append(i)
 # print(sorted(contatos))
 

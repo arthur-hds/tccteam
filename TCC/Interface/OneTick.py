@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import icons.imagesQtMain
 import sys
-from TCC.bibliotecas import *
+from bibliotecas import *
 # from TCC.Send import Mensagem
 from selenium import webdriver
 from pyautogui import hotkey
@@ -238,7 +238,7 @@ class Ui_MainWindow(object):
         self.label_68.setAlignment(QtCore.Qt.AlignCenter)
         self.label_68.setObjectName("label_68")
         self.widgetOpcoes = QtWidgets.QWidget(self.pageOneTick)
-        self.widgetOpcoes.setGeometry(QtCore.QRect(218, 206, 781, 371))
+        self.widgetOpcoes.setGeometry(QtCore.QRect(218, 206, 781, 321))
         self.widgetOpcoes.setVisible(False)
         self.widgetOpcoes.setStyleSheet("background-color: rgb(128, 62, 226);\n"
 "border:none;\n"
@@ -289,6 +289,7 @@ class Ui_MainWindow(object):
         self.widgetAddVariaveis_15.setObjectName("widgetAddVariaveis_15")
         self.pushButton_17 = QtWidgets.QPushButton(self.widgetOpcoes)
         self.pushButton_17.setGeometry(QtCore.QRect(30, 90, 81, 41))
+        self.pushButton_17.clicked.connect(self.resetarRotinasBotao)
         self.pushButton_17.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -338,22 +339,9 @@ class Ui_MainWindow(object):
 "border-radius:10%\n"
 "")
         self.widgetAddVariaveis_16.setObjectName("widgetAddVariaveis_16")
-        self.caixaNomeVariavel_7 = QtWidgets.QLineEdit(self.widgetOpcoes)
-        self.caixaNomeVariavel_7.setGeometry(QtCore.QRect(30, 241, 491, 21))
-        self.caixaNomeVariavel_7.setStyleSheet("background-color: rgba(0,0,0,0);\n"
-"font: 7pt \"MS Shell Dlg 2\";\n"
-"border:none;\n"
-"color: rgb(255, 255, 255);\n"
-"border-bottom:3px solid rgb(250, 250,250);\n"
-"border-radius:5%;\n"
-"padding-bottom:7px;\n"
-"letter-spacing: 1px;\n"
-"line-height: 1.1;\n"
-"word-spacing: 10px;")
-        self.caixaNomeVariavel_7.setText("")
-        self.caixaNomeVariavel_7.setObjectName("caixaNomeVariavel_7")
         self.pushButton_18 = QtWidgets.QPushButton(self.widgetOpcoes)
-        self.pushButton_18.setGeometry(QtCore.QRect(530, 230, 81, 41))
+        self.pushButton_18.setGeometry(QtCore.QRect(30, 230, 81, 41))
+        self.pushButton_18.clicked.connect(self.deslogar)
         self.pushButton_18.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -383,64 +371,6 @@ class Ui_MainWindow(object):
 "}")
         self.pushButton_18.setText("")
         self.pushButton_18.setObjectName("pushButton_18")
-        self.pushButton_19 = QtWidgets.QPushButton(self.widgetOpcoes)
-        self.pushButton_19.setGeometry(QtCore.QRect(530, 290, 81, 41))
-        self.pushButton_19.setStyleSheet("\n"
-"QPushButton{\n"
-"    \n"
-"    image: url(:/pics/24x24/cil-description.png);\n"
-"    \n"
-"    background-color: rgb(145, 70, 255);\n"
-"    border:none;\n"
-"    border-radius:15%;\n"
-"    padding: 5px;\n"
-"    color:white;\n"
-"    font:87 23pt \"Arial Black\";\n"
-"    color: rgb(0, 170, 0);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"\n"
-"background-color: ;\n"
-"    background-color: rgb(137, 66, 243);\n"
-"borderr-radius: 10px rgb(70, 70, 70);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"\n"
-"background-color: rgbrgb(170, 0, 255);\n"
-"color: rgb(255, 255, 255);\n"
-"\n"
-"}")
-        self.pushButton_19.setText("")
-        self.pushButton_19.setObjectName("pushButton_19")
-        self.caixaNomeVariavel_8 = QtWidgets.QLineEdit(self.widgetOpcoes)
-        self.caixaNomeVariavel_8.setGeometry(QtCore.QRect(30, 301, 491, 21))
-        self.caixaNomeVariavel_8.setStyleSheet("background-color: rgba(0,0,0,0);\n"
-"font: 7pt \"MS Shell Dlg 2\";\n"
-"border:none;\n"
-"color: rgb(255, 255, 255);\n"
-"border-bottom:3px solid rgb(250, 250,250);\n"
-"border-radius:5%;\n"
-"padding-bottom:7px;\n"
-"letter-spacing: 1px;\n"
-"line-height: 1.1;\n"
-"word-spacing: 10px;")
-        self.caixaNomeVariavel_8.setText("")
-        self.caixaNomeVariavel_8.setObjectName("caixaNomeVariavel_8")
-        self.label_73 = QtWidgets.QLabel(self.widgetOpcoes)
-        self.label_73.setGeometry(QtCore.QRect(30, 220, 91, 21))
-        self.label_73.setStyleSheet("font: 87 7pt \"Arial Black\";\n"
-"color: rgb(255, 255, 255);\n"
-"background:none;")
-        self.label_73.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_73.setObjectName("label_73")
-        self.label_74 = QtWidgets.QLabel(self.widgetOpcoes)
-        self.label_74.setGeometry(QtCore.QRect(30, 280, 81, 21))
-        self.label_74.setStyleSheet("font: 87 7pt \"Arial Black\";\n"
-"color: rgb(255, 255, 255);\n"
-"background:none;")
-        self.label_74.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_74.setObjectName("label_74")
         self.widgetRotinasMensais = QtWidgets.QWidget(self.pageOneTick)
         self.widgetRotinasMensais.setGeometry(QtCore.QRect(318, 456, 241, 221))
         self.widgetRotinasMensais.setStyleSheet("background-color: rgb(79, 38, 140);\n"
@@ -834,6 +764,7 @@ class Ui_MainWindow(object):
         self.textoUltimaVerificacao_4.setObjectName("textoUltimaVerificacao_4")
         self.botaoAtualizar_4 = QtWidgets.QPushButton(self.widgetTab)
         self.botaoAtualizar_4.setGeometry(QtCore.QRect(552, 34, 51, 41))
+        self.botaoAtualizar_4.clicked.connect(self.verificarWhatsapp)
         self.botaoAtualizar_4.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -1276,10 +1207,6 @@ class Ui_MainWindow(object):
         self.label_70.setText(_translate("MainWindow", "APERTE ABAIXO PARA RESETAR TODAS AS ROTINAS E VOLTAR AO PADRÃO"))
         self.label_71.setText(_translate("MainWindow", "INFORME ABAIXO O LOCAL DOS BANCOS DE DADOS"))
         self.label_72.setText(_translate("MainWindow", "INFORMAR LOCAIS"))
-        self.caixaNomeVariavel_7.setPlaceholderText(_translate("MainWindow", "Variável"))
-        self.caixaNomeVariavel_8.setPlaceholderText(_translate("MainWindow", "Variável"))
-        self.label_73.setText(_translate("MainWindow", "localContent"))
-        self.label_74.setText(_translate("MainWindow", "InterfaceDB"))
         self.botaoMensais_4.setText(_translate("MainWindow", "ROTINAS MENSAIS"))
         self.textoHorarioMensais1_4.setText(_translate("MainWindow", "12:20"))
         self.textoMsgFaltandoMensais_4.setText(_translate("MainWindow", "X MENSAGENS FALTANDO"))
@@ -1355,9 +1282,37 @@ class Ui_MainWindow(object):
         self.listaMensagensDeRotinas_4.addItem()
 
 
+
+    def deslogar(self):
+        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        cursor = conexao.cursor()
+
+        apagarTodasRotinas(cursor)
+        atualizarLogin(cursor, 0)
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+
+
+
+
+    def resetarRotinasBotao(self):
+        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        cursor = conexao.cursor()
+
+        apagarTodasRotinas(cursor)
+
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+
+        self.verificarSeHaMensagensParaExibir()
+
+
     def verificarWhatsapp(self):
             close = subprocess.run("taskkill /im chrome.exe /f", shell=True, stderr=True)
-            # os.system("taskkill /im chrome.exe /f").as_integer_ratio()
             print(close.stderr)
             sleep(1)
             self.options = webdriver.ChromeOptions()
@@ -1369,26 +1324,36 @@ class Ui_MainWindow(object):
                     hotkey('ctrl', 'shift', 't')
 
             self.driver.get("https://web.whatsapp.com/")
-            try:
-                esperar = WebDriverWait(driver=self.driver, timeout=100).until(
-                EC.presence_of_element_located(
-                (By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
 
-                conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
-                cursor = conexao.cursor()
+            esperar = WebDriverWait(driver=self.driver, timeout=100).until(
+            EC.presence_of_element_located(
+            (By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
 
-                atualizarLogin(cursor, 1)
+            conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+            cursor = conexao.cursor()
 
-                conexao.commit()
-                cursor.close()
-                conexao.close()
-                sleep(2)
+            atualizarLogin(cursor, 1)
+
+            conexao.commit()
+            cursor.close()
+            conexao.close()
+            sleep(2)
+
+            if self.stackedWidget.currentIndex() == 0:
                 self.stackedWidget.setCurrentIndex(extrairLogin()[0])
-                sleep(2)
-                self.driver.close()
-            except:
-                 self.driver.close()
-                 return None
+
+
+            self.widgetStatusWhatsapp_4.setStyleSheet(f"background-color:{extrairLogin()[2]};\n"
+            "border-radius:15%\n"
+            "")
+
+
+            self.textoUltimaVerificacao_4.setText(extrairLogin()[1])
+
+
+            sleep(2)
+
+            self.driver.close()
 
 
 
@@ -1594,11 +1559,12 @@ class Ui_MainWindow(object):
         conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
         cursor = conexao.cursor()
         try:
-            item = self.listaMensagensDeRotinas_4.currentItem().text()
-            itemQ = self.listaMensagensDeRotinas_4.currentItem()
-            cursor.execute('DELETE FROM Mensagens WHERE nome_rotina = ?', (item, ))
-            self.listaMensagensDeRotinas_4.takeItem(self.listaMensagensDeRotinas_4.indexFromItem(itemQ).row())
-            atualizarRotinasInterface(cursor)
+            if self.listaMensagensDeRotinas_4.count() != 0:
+                item = self.listaMensagensDeRotinas_4.currentItem().text()
+                itemQ = self.listaMensagensDeRotinas_4.currentItem()
+                cursor.execute('DELETE FROM Mensagens WHERE nome_rotina = ?', (item, ))
+                self.listaMensagensDeRotinas_4.takeItem(self.listaMensagensDeRotinas_4.indexFromItem(itemQ).row())
+                atualizarRotinasInterface(cursor)
         except:
             self.__popupErro('Erro ao deletar', 'Selecione um item para deletar')
 

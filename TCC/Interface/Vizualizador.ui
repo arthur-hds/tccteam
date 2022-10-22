@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1179</width>
-    <height>763</height>
+    <height>762</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -184,7 +184,7 @@ border:None;</string>
      <widget class="QWidget" name="widgetRotinasDeDias" native="true">
       <property name="geometry">
        <rect>
-        <x>638</x>
+        <x>478</x>
         <y>456</y>
         <width>241</width>
         <height>221</height>
@@ -866,7 +866,7 @@ background:none;</string>
      <widget class="QWidget" name="widgetRotinasMensais" native="true">
       <property name="geometry">
        <rect>
-        <x>318</x>
+        <x>163</x>
         <y>456</y>
         <width>241</width>
         <height>221</height>
@@ -2370,7 +2370,6 @@ color: rgb(255, 255, 255);
        <string/>
       </property>
      </widget>
-     <zorder>widgetOpcoes</zorder>
      <zorder>widgetAbrirMensagens</zorder>
      <zorder>widgetRotinasDeDias</zorder>
      <zorder>label_68</zorder>
@@ -2381,12 +2380,14 @@ color: rgb(255, 255, 255);
      <zorder>widgetTab</zorder>
      <zorder>widgetRotinasDiarias</zorder>
      <zorder>botaoAtualizarRotinas</zorder>
+     <zorder>widgetOpcoes</zorder>
     </widget>
    </widget>
   </widget>
  </widget>
  <resources>
   <include location="../PycharmProjects/Git/tccteam/TCC/Interface/icons/imagesQtMain.qrc"/>
+  <include location="icons/imagesQtMain.qrc"/>
  </resources>
  <connections/>
 </ui>

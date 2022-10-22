@@ -67,6 +67,15 @@ class Pyvcard():
                 self.number += [x.split(':')[1]]
                 if len(self.username) != len(self.number):
                     self.number.pop()
+        # print(self.number)
+
+        for k in range(0, len(self.number)):
+            try:
+                if self.number[k][0:2] != '55' and len(self.number[k]) < 10:
+                    self.number[k] = f'+5547{self.number[k]}'
+            except:
+                pass
+
 
         # self.username, self.number = [[x.split("FN:")[1] for x in self.users if "FN" in x and "CHARSET" not in x], [x.split(':')[1] for x in self.users if "TEL;" in x]]
 

@@ -16,7 +16,7 @@ import sys, sqlite3
 from PyQt5.QtCore import *
 from datetime import date
 import arrow
-from TCC.bibliotecas import atualizarDados, resetarRotinas, extrairMensagens, atualizarRotinasInterface
+from bibliotecas import atualizarDados, resetarRotinas, extrairMensagens, atualizarRotinasInterface
 import ast
 from pyautogui import hotkey
 
@@ -165,32 +165,9 @@ class Ui_Form(object):
         self.horizontalLayout_20.addWidget(self.label_53)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_20.addItem(spacerItem)
-        self.botaoMinimazar_3 = QtWidgets.QPushButton(self.widget_20)
-        self.botaoMinimazar_3.setMinimumSize(QtCore.QSize(50, 0))
-        self.botaoMinimazar_3.clicked.connect(self.minimizar)
-        self.botaoMinimazar_3.setStyleSheet("QPushButton{\n"
-"    \n"
-"    background-color: rgb(145, 70, 255);\n"
-"    border-radius:10px;\n"
-"    \n"
-"    \n"
-"    font: 87 12pt \"Arial Black\";\n"
-"    color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: rgb(166, 68, 255);\n"
-"borderr-radius: 10px rgb(70, 70, 70);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"background-color: rgb(145, 70, 255);\n"
-"color: (145, 70, 255);\n"
-"}")
-        self.botaoMinimazar_3.setObjectName("botaoMinimazar_3")
-        self.horizontalLayout_20.addWidget(self.botaoMinimazar_3)
         self.botaoFechar_3 = QtWidgets.QPushButton(self.widget_20)
         self.botaoFechar_3.setMinimumSize(QtCore.QSize(50, 0))
-        self.botaoFechar_3.clicked.connect(QtWidgets.qApp.quit)
+        self.botaoFechar_3.clicked.connect(self.fechar)
         self.botaoFechar_3.setStyleSheet("QPushButton{\n"
 "    \n"
 "    background-color: rgb(145, 70, 255);\n"
@@ -606,35 +583,8 @@ class Ui_Form(object):
 "}")
         self.botaoMensagemApagar.setText("")
         self.botaoMensagemApagar.setObjectName("botaoMensagemApagar")
-        self.botaoEmoji = QtWidgets.QPushButton(self.frame_16)
-        self.botaoEmoji.setGeometry(QtCore.QRect(630, 170, 51, 41))
-        self.botaoEmoji.clicked.connect(self.mostrarEmoji)
-        self.botaoEmoji.setStyleSheet("QPushButton{\n"
-"    background-color: rgb(145, 70, 255);\n"
-"    \n"
-"    \n"
-"    image: url(:/imagemAlerta/24x24/cil-mood-good.png);\n"
-"    color:white;\n"
-"    font:87 8pt \"Arial Black\";\n"
-"    background-color: rgb(145, 70, 255);\n"
-"    border-radius:10px;\n"
-"    \n"
-"    font:87 10pt \"Arial Black\";\n"
-"    color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: rgb(166, 68, 255);\n"
-"borderr-radius: 10px rgb(70, 70, 70);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"background-color: rgb(145, 70, 255);\n"
-"color: (145, 70, 255);\n"
-"}")
-        self.botaoEmoji.setText("")
-        self.botaoEmoji.setObjectName("botaoEmoji")
         self.botaoAddConteudo_3 = QtWidgets.QPushButton(self.frame_16)
-        self.botaoAddConteudo_3.setGeometry(QtCore.QRect(690, 170, 51, 41))
+        self.botaoAddConteudo_3.setGeometry(QtCore.QRect(630, 170, 111, 41))
         self.botaoAddConteudo_3.clicked.connect(self.browseFileImage)
         self.botaoAddConteudo_3.setStyleSheet("QPushButton{\n"
 "    background-color: rgb(145, 70, 255);\n"
@@ -1181,6 +1131,7 @@ class Ui_Form(object):
         self.caixaFiltrarRemetentes.setObjectName("caixaFiltrarRemetentes")
         self.botaoFiltrar = QtWidgets.QPushButton(self.frame_17)
         self.botaoFiltrar.setGeometry(QtCore.QRect(620, 80, 51, 41))
+        self.botaoFiltrar.clicked.connect(self.filtrar)
         self.botaoFiltrar.setStyleSheet("QPushButton{\n"
 "    background-color: rgb(145, 70, 255);\n"
 "    \n"
@@ -1489,7 +1440,7 @@ class Ui_Form(object):
         self.calendario_3 = QtWidgets.QCalendarWidget(self.page)
         self.calendario_3.setGeometry(QtCore.QRect(0, 20, 351, 281))
         self.calendario_3.setDisabled(True)
-
+        self.calendario_3.setMinimumDate(QtCore.QDate(int(date.today().year), int(date.today().month), int(date.today().day)))
         self.calendario_3.setCursor(Qt.PointingHandCursor)
         self.calendario_3.setStyleSheet("QCalendarWidget QToolButton {\n"
 "    \n"
@@ -1561,7 +1512,6 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "")
-        self.calendario_3.setMinimumDate(QtCore.QDate(2022, 10, 7))
         self.calendario_3.setFirstDayOfWeek(QtCore.Qt.Sunday)
         self.calendario_3.setGridVisible(False)
         self.calendario_3.setSelectionMode(QtWidgets.QCalendarWidget.SingleSelection)
@@ -1598,6 +1548,7 @@ class Ui_Form(object):
         self.label_68.setObjectName("label_68")
         self.botaoAdicionarDias_3 = QtWidgets.QPushButton(self.widget_24)
         self.botaoAdicionarDias_3.setGeometry(QtCore.QRect(110, 110, 81, 31))
+        self.botaoAdicionarDias_3.clicked.connect(self.adicionarDiasPersonalizados)
         self.botaoAdicionarDias_3.setStyleSheet("QPushButton{\n"
 "    border: 0px;\n"
 "    border-radius:10px;\n"
@@ -1620,6 +1571,7 @@ class Ui_Form(object):
         self.botaoAdicionarDias_3.setObjectName("botaoAdicionarDias_3")
         self.listaDiasPersonalizado_3 = QtWidgets.QListWidget(self.widget_24)
         self.listaDiasPersonalizado_3.setGeometry(QtCore.QRect(10, 160, 281, 91))
+        self.listaDiasPersonalizado_3.doubleClicked.connect(self.eliminarItemListaPersonalizado)
         self.listaDiasPersonalizado_3.setStyleSheet("QListWidget\n"
 "{\n"
 "border : 3px solid rgb(255,255,255);\n"
@@ -1765,6 +1717,7 @@ class Ui_Form(object):
         self.textoQntMsg_3.setStyleSheet("font:87 10pt \"Arial Black\";\n"
 "color: rgba(255, 255, 255, 150);")
         self.textoQntMsg_3.setObjectName("textoQntMsg_3")
+        self.textoQntMsg_3.setDisabled(True)
         self.horizontalLayout_25.addWidget(self.textoQntMsg_3)
         self.botaoConcluir_3 = QtWidgets.QPushButton(self.frame_19)
         self.botaoConcluir_3.setGeometry(QtCore.QRect(330, 470, 101, 31))
@@ -1816,6 +1769,7 @@ class Ui_Form(object):
         self.textoQntDias_3.setStyleSheet("font:87 10pt \"Arial Black\";\n"
 "color: rgba(255, 255, 255, 150);")
         self.textoQntDias_3.setObjectName("textoQntDias_3")
+        self.textoQntDias_3.setDisabled(True)
         self.horizontalLayout_26.addWidget(self.textoQntDias_3)
         self.widget_28 = QtWidgets.QWidget(self.frame_19)
         self.widget_28.setGeometry(QtCore.QRect(1, 260, 531, 81))
@@ -1839,6 +1793,7 @@ class Ui_Form(object):
         self.textoHorarioEnvio_3.setStyleSheet("font:87 10pt \"Arial Black\";\n"
 "color: rgba(255, 255, 255, 150);")
         self.textoHorarioEnvio_3.setObjectName("textoHorarioEnvio_3")
+        self.textoHorarioEnvio_3.setDisabled(True)
         self.horizontalLayout_27.addWidget(self.textoHorarioEnvio_3)
         self.botaoRetro3_3 = QtWidgets.QPushButton(self.frame_19)
         self.botaoRetro3_3.setGeometry(QtCore.QRect(30, 510, 31, 31))
@@ -2069,6 +2024,7 @@ class Ui_Form(object):
 
 
         self.mensagensNaoFormatadas = []
+        self.listaMidias = []
         self.frame_7.setGraphicsEffect(QtWidgets.QGraphicsDropShadowEffect(blurRadius=20, xOffset=3, yOffset=3,
                                                                            color=QtGui.QColor(0, 0, 0, 100)))
 
@@ -2088,7 +2044,6 @@ class Ui_Form(object):
         self.label_51.setText(_translate("Form", "Destinatário"))
         self.label_52.setText(_translate("Form", "Horário"))
         self.label_53.setText(_translate("Form", "Agendar mensagem"))
-        self.botaoMinimazar_3.setText(_translate("Form", "-"))
         self.botaoFechar_3.setText(_translate("Form", "x"))
         self.label_54.setText(_translate("Form", "Configurando a mensagem"))
         self.label_55.setText(_translate("Form", "Mensagem:"))
@@ -2247,6 +2202,12 @@ class Ui_Form(object):
               pass
 
 
+        if self.comboTipoDeEnvio_3.itemText(self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário':
+            if not self.__horarioPassado():
+                return self.__popupErro('Erro ao salvar horário', 'O horário informado já passou')
+
+
+
         if nomeValido:
 
                 dados = self.__coletarDados()
@@ -2265,13 +2226,20 @@ class Ui_Form(object):
                 print(type(dia))
                 print(dia)
                 if len(dia) > 1 and type(dia) is list:
+                    count = 0
+                    count2 = ''
                     for i in dia:
+                        count += 1
+                        if count == 1:
+                            count2 = 0
+                        else:
+                            count += 1
                         diaLista = [i]
                         self.cursor.execute(
                             'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente, contem_midia, data_criada, hora_criada, nome_rotina, executar_erro)'
                             ' VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (
                             str(mensagens), horario, str(diaLista), str(remetente), tipo_remetente, contem_midia,
-                            data_criada, hora_criada, str(nome_rotina), str(executar_erro),))
+                            data_criada, hora_criada, str(nome_rotina)+str(count2), str(executar_erro),))
                 else:
                     self.cursor.execute(
                     'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente, contem_midia, data_criada, hora_criada, nome_rotina, executar_erro)'
@@ -2295,6 +2263,7 @@ class Ui_Form(object):
 
                 atualizarDados(cursor=self.cursor)
                 atualizarRotinasInterface(cursor=self.cursor)
+                self.fechar()
 
                 self.conexao.commit()
                 self.cursor.close()
@@ -2361,41 +2330,50 @@ class Ui_Form(object):
 
         #BOTAR VARIAVEIS
         for i in range(0, self.listaMensagensSalvas_3.count()):
-                msg = self.mensagensNaoFormatadas[i]
+                try:
+                    msg = self.mensagensNaoFormatadas[i]
 
-                for j in range(0, self.listaVariaveis_3.count()):
-                    variavel = self.listaVariaveis_3.item(j).text()
+                    for j in range(0, self.listaVariaveis_3.count()):
+                        variavel = self.listaVariaveis_3.item(j).text()
 
-                    if f'({variavel})' in msg:
-                        if variavel == 'Nome do destinatário':
-                            msg = msg.replace(f'({variavel})', '(Nome do destinatário)')
+                        if f'({variavel})' in msg:
+                            if variavel == 'Nome do destinatário':
+                                msg = msg.replace(f'({variavel})', '(Nome do destinatário)')
 
-                        elif variavel == 'Hora no envio da mensagem':
-                            msg = msg.replace(f'({variavel})', self.horario)
-                        elif variavel == 'Data no envio da mensagem':
-                            msg = msg.replace(f'({variavel})', self.Dias)
-                        else:
-                            msg = msg.replace(f'({variavel})', self.variaveisEConteudos[variavel])
+                            elif variavel == 'Hora no envio da mensagem':
+                                msg = msg.replace(f'({variavel})', self.horario)
+                            elif variavel == 'Data no envio da mensagem':
+                                msg = msg.replace(f'({variavel})', self.Dias)
+                            else:
+                                msg = msg.replace(f'({variavel})', self.variaveisEConteudos[variavel])
 
 
-                self.mensagensFormatadas.append(msg)
+                    self.mensagensFormatadas.append(msg)
 
-                print(self.mensagensFormatadas)
+                    print(self.mensagensFormatadas)
+                except:
+                    pass
 
         if not numerosContatos :
             self.remetente = nomesGrupos
         else:
             self.remetente = numerosContatos
-            # print(123)
+
 
         try:
             self.exploradorMidia
-            self.contem_midia = 'SIM'
+            for k in range(0, self.listaMensagensSalvas_3.count()):
+                print(self.listaMensagensSalvas_3.item(k).text())
+                item = self.listaMensagensSalvas_3.item(k).text()
+                if '...' not in item[len(item) - 3:]:
+                    print(item[len(item) - 3:])
+                    self.contem_midia = 'SIM'
         except:
             self.contem_midia = 'NÃO'
 
 
         atual = arrow.now()
+        self.dia_atual_formatado = atual.now(tzinfo=atual.tzinfo).format('MM/DD')
         self.dia_atual = atual.now(tzinfo=atual.tzinfo).format('DD/MM')
         self.hora_atual = atual.now(tzinfo=atual.tzinfo).format('HH:mm')
 
@@ -2418,8 +2396,15 @@ class Ui_Form(object):
         dir = os.getcwd()
 
         self.exploradorMidia = QtWidgets.QFileDialog.getOpenFileName(directory=dir, caption='OneTick Selecionar Imagem', filter="Images (*.png *.xpm *.jpg)")
+        if self.exploradorMidia[0] != '':
+            nomeArq = self.exploradorMidia[0].__str__().split('/')
 
-        print(self.exploradorMidia[0])
+            self.listaMidias.append(self.exploradorMidia[0])
+            nomeArq = nomeArq[-1]
+
+            self.mensagensNaoFormatadas.append(self.exploradorMidia[0])
+            msg_curta = f'(MIDIA - {nomeArq})'
+            self.listaMensagensSalvas_3.addItem(msg_curta)
 
 
 
@@ -2431,6 +2416,33 @@ class Ui_Form(object):
 
         except:
             self.widgetErro.setVisible(False)
+
+
+
+    def __horarioPassado(self):
+       atual = arrow.now()
+       self.dia_atual_formatado = atual.now(tzinfo=atual.tzinfo).format('MM/DD')
+       self.hora_atual = atual.now(tzinfo=atual.tzinfo).format('HH:mm')
+       for i in range(0, self.listaDiasSelecionados_3.count()):
+           if self.listaDiasSelecionados_3.item(i).text() == self.dia_atual_formatado:
+
+               if int(self.hora_atual[:2]) > int(self.spinBoxHora.text()):
+
+                   self.__popupErro('Erro ao informar horário',
+                   'O horário selecionado\n já passou para um dos dias')
+
+                   return False
+               elif int(self.hora_atual[:2]) == int(self.spinBoxHora.text()):
+                   if int(self.hora_atual[3:]) >= int(self.spinBoxMinuto.text()):
+                       self.__popupErro('Erro ao informar horário',
+                       'O horário selecionado\n já passou para um dos dias')
+                       return False
+                   else:
+                       return True
+               else:
+                   return True
+           else:
+               return True
 
 
 
@@ -2477,6 +2489,15 @@ class Ui_Form(object):
 
                 self.__popupErro('Erro de personalização', 'Os dias do calendário não foram\n informados corretamente')
                 return False
+
+
+
+        #HORARIO JA PASSOU
+        elif self.comboTipoDeEnvio_3.itemText(
+        self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário' and currentIndex == 2:
+            if not self.__horarioPassado():
+                return False
+
 
 
         if currentIndex == 2:
@@ -2720,7 +2741,7 @@ class Ui_Form(object):
                 self.contatosENumeros[elemento[0]] = elemento[1]
                 self.listaContatos_3.addItem(elemento[0])
         except:
-            self.__popupErro('Erro ao preencher contatos', 'Erro ao importar contatos salavos')
+            self.__popupErro('Erro ao preencher contatos', 'Erro ao importar contatos salvos')
 
         self.cursor.close()
         self.conexao.close()
@@ -2849,6 +2870,7 @@ class Ui_Form(object):
         row = self.listaMensagensSalvas_3.currentRow()
         item = self.listaMensagensSalvas_3.takeItem(row)
         self.listaMensagensSalvas_3.insertItem(row - 1, item)
+        self.__atualizarOrdemMensagens()
 
 
 
@@ -2856,14 +2878,26 @@ class Ui_Form(object):
         row = self.listaMensagensSalvas_3.currentRow()
         item = self.listaMensagensSalvas_3.takeItem(row)
         self.listaMensagensSalvas_3.insertItem(row + 1, item)
+        self.__atualizarOrdemMensagens()
 
 
+
+
+    def __atualizarOrdemMensagens(self):
+        self.mensagensNaoFormatadas.clear()
+        for i in range(0, self.listaMensagensSalvas_3.count()):
+            mensagem = self.listaMensagensSalvas_3.item(i).text()
+            if '...' in mensagem[len(mensagem) - 3:]:
+                self.mensagensNaoFormatadas.append(mensagem[:len(mensagem) - 3])
+            else:
+                self.mensagensNaoFormatadas.append(mensagem)
 
 
 
     def eliminarItemListaMensagens(self):
         item = self.listaMensagensSalvas_3.currentItem()
         self.listaMensagensSalvas_3.takeItem(self.listaMensagensSalvas_3.indexFromItem(item).row())
+        self.__atualizarOrdemMensagens()
         self.mostrarBotoesMensagens()
 
 
@@ -2884,9 +2918,11 @@ class Ui_Form(object):
             self.listaDiasPersonalizado_3.takeItem(self.listaDiasPersonalizado_3.indexFromItem(itemQ).row())
 
 
+
     def eliminarItemListaCalendario(self):
         item = self.listaDiasSelecionados_3.currentItem()
         self.listaDiasSelecionados_3.takeItem(self.listaDiasSelecionados_3.indexFromItem(item).row())
+
 
 
     def salvar_msg(self):
@@ -2894,8 +2930,9 @@ class Ui_Form(object):
             msg = self.caixaMensagens_3.toPlainText()
             # item = QtWidgets.QListWidgetItem()
             self.mensagensNaoFormatadas.append(msg)
-            msg_curta = msg[:25]+"..."
-            self.listaMensagensSalvas_3.addItem(msg_curta)
+            msg_format = msg+"..."
+            self.listaMensagensSalvas_3.addItem(msg_format)
+            self.caixaMensagens_3.clear()
 
         else:
             self.__popupErro('Erro ao salvar mensagem', 'A mensagem não possui informações')
@@ -2907,6 +2944,31 @@ class Ui_Form(object):
         self.stackedWidget_3.setCurrentIndex(index - 1)
         if index != 3:
                 self.barraMomento_3.setValue(self.barraMomento_3.value() - 32)
+
+
+
+    def filtrar(self):
+        filtro = self.caixaFiltrarRemetentes.text()
+
+        self.conexao = sqlite3.connect(self.local)
+        self.cursor = self.conexao.cursor()
+
+        try:
+            self.listaContatos_3.clear()
+            self.contatosENumeros = {}
+            self.cursor.execute('SELECT * FROM Contatos ORDER BY nome ASC')
+            for elemento in self.cursor.fetchall():
+                if elemento[0][:len(filtro)].upper() == filtro.upper():
+                    self.contatosENumeros[elemento[0]] = elemento[1]
+                    self.listaContatos_3.addItem(elemento[0])
+        except:
+            self.__popupErro('Erro ao preencher contatos', 'Erro ao importar contatos salvos')
+
+        self.cursor.close()
+        self.conexao.close()
+
+
+
 
 
 
@@ -2931,8 +2993,12 @@ class Ui_Form(object):
 
 
     def minimizar(self):
-        self.showMinimized()
+        self.frame_7.showMinimized()
 
+    def fechar(self):
+        self.frame_7.close()
+        self.widgetErro.close()
+        self.widgetSimNao.close()
 
 
 import sys
