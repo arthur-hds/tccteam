@@ -29,6 +29,8 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet("background-color:rgb(46, 56, 92);")
         MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         MainWindow.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
+        self.InformacoesEPath()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
@@ -124,7 +126,7 @@ class Ui_MainWindow(object):
         self.widgetRotinasDeDias.setObjectName("widgetRotinasDeDias")
         self.botaoDias_4 = QtWidgets.QPushButton(self.widgetRotinasDeDias)
         self.botaoDias_4.setGeometry(QtCore.QRect(0, 150, 241, 71))
-        self.botaoDias_4.clicked.connect(self.abrirMensagens)
+        self.botaoDias_4.clicked.connect(self.cliqueDeDias)
         self.botaoDias_4.setStyleSheet("\n"
 "\n"
 "\n"
@@ -320,7 +322,7 @@ class Ui_MainWindow(object):
         self.pushButton_17.setText("")
         self.pushButton_17.setObjectName("pushButton_17")
         self.label_71 = QtWidgets.QLabel(self.widgetOpcoes)
-        self.label_71.setGeometry(QtCore.QRect(30, 180, 341, 21))
+        self.label_71.setGeometry(QtCore.QRect(30, 180, 521, 21))
         self.label_71.setStyleSheet("font: 87 7pt \"Arial Black\";\n"
 "color: rgb(255, 255, 255);\n"
 "background:none;")
@@ -1205,8 +1207,8 @@ class Ui_MainWindow(object):
         self.label_69.setText(_translate("MainWindow", "RESETAR ROTINAS:"))
         self.botaoFechar_6.setText(_translate("MainWindow", "x"))
         self.label_70.setText(_translate("MainWindow", "APERTE ABAIXO PARA RESETAR TODAS AS ROTINAS E VOLTAR AO PADRÃO"))
-        self.label_71.setText(_translate("MainWindow", "INFORME ABAIXO O LOCAL DOS BANCOS DE DADOS"))
-        self.label_72.setText(_translate("MainWindow", "INFORMAR LOCAIS"))
+        self.label_71.setText(_translate("MainWindow", "CLIQUE NO BOTÃO ABAIXO PARA RESETAR TODAS AS ROTINAS E DESOLGAR"))
+        self.label_72.setText(_translate("MainWindow", "DESLOGAR"))
         self.botaoMensais_4.setText(_translate("MainWindow", "ROTINAS MENSAIS"))
         self.textoHorarioMensais1_4.setText(_translate("MainWindow", "12:20"))
         self.textoMsgFaltandoMensais_4.setText(_translate("MainWindow", "X MENSAGENS FALTANDO"))
@@ -1251,7 +1253,7 @@ class Ui_MainWindow(object):
 
 
     def abrirMensagens(self):
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
         atualizarDados(cursor)
 
@@ -1284,21 +1286,24 @@ class Ui_MainWindow(object):
 
 
     def deslogar(self):
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         apagarTodasRotinas(cursor)
         atualizarLogin(cursor, 0)
 
+
         conexao.commit()
         cursor.close()
         conexao.close()
+
+        QtWidgets.qApp.quit()
 
 
 
 
     def resetarRotinasBotao(self):
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         apagarTodasRotinas(cursor)
@@ -1311,12 +1316,50 @@ class Ui_MainWindow(object):
         self.verificarSeHaMensagensParaExibir()
 
 
+
+    def InformacoesEPath(self):
+
+        Interface = f'{os.getcwd()}'
+        self.localContent = f'{Interface[:len(Interface)-10]}\\localContent.db'
+        self.InterfaceDB = f'{Interface}\\InterfaceDB.db'
+
+        conexao = sqlite3.connect(rf'{self.localContent}')
+        cursor = conexao.cursor()
+
+
+
+
+
+        cursor.execute('DELETE FROM Informacoes')
+        cursor.execute('INSERT INTO Informacoes (local)'
+        'VALUES (?)', (Interface[:len(Interface)-10], ))
+
+        # cursor.execute('INSERT INTO Informacoes (local)'
+        # 'VALUES (?)', ())
+
+
+
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+
+
+
+
+
+
+
+
+
+
+
     def verificarWhatsapp(self):
             close = subprocess.run("taskkill /im chrome.exe /f", shell=True, stderr=True)
             print(close.stderr)
             sleep(1)
             self.options = webdriver.ChromeOptions()
-            self.options.add_argument(f'user-data-dir=C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data')
+            self.options.add_argument(f'user-data-dir={os.path.expanduser("~")}\\AppData\\Local\\Google\\Chrome\\User Data')
             self.driver = webdriver.Chrome(options=self.options)
             sleep(1)
             if close.returncode == 0:
@@ -1329,7 +1372,7 @@ class Ui_MainWindow(object):
             EC.presence_of_element_located(
             (By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
 
-            conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+            conexao = sqlite3.connect(rf'{self.localContent}')
             cursor = conexao.cursor()
 
             atualizarLogin(cursor, 1)
@@ -1366,7 +1409,8 @@ class Ui_MainWindow(object):
 
 
     def verificarSeHaMensagensParaExibir(self):
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         if extrairMensagensEnvio(cursor):
@@ -1445,6 +1489,28 @@ class Ui_MainWindow(object):
             self.stackedWidgetSemanais_4.setCurrentIndex(1)
 
 
+
+
+
+
+        if extrairMensagensPersonalizada(cursor):
+            self.stackedWidgetDias_4.setCurrentIndex(0)
+            if extrairMensagensPersonalizada(cursor):
+                msgsFaltantes = 0
+                msgsTotais = len(extrairMensagensPersonalizada(cursor))
+                for i in range(0, len(extrairMensagensPersonalizada(cursor))):
+                    if extrairMensagensPersonalizada(cursor)[i][10] == 'PENDENTE':
+                        msgsFaltantes += 1
+
+                msgsEnviadas = msgsTotais - msgsFaltantes
+                self.textoHorarioDias1_4.setText(extrairMensagensPersonalizada(cursor)[0][1])
+                self.textoHorarioDias2_4.setText(extrairMensagensPersonalizada(cursor)[0][1])
+                self.textoMsgFaltandoDias_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                self.textoMsgEnviadasDias_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
+        else:
+            self.stackedWidgetDias_4.setCurrentIndex(1)
+
+
         conexao.commit()
         cursor.close()
         conexao.close()
@@ -1453,7 +1519,7 @@ class Ui_MainWindow(object):
 
     def cliqueDiaria(self):
         self.abrirMensagens()
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         self.listaMensagensDeRotinas_4.clear()
@@ -1473,7 +1539,7 @@ class Ui_MainWindow(object):
 
     def cliqueSemanais(self):
         self.abrirMensagens()
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         self.listaMensagensDeRotinas_4.clear()
@@ -1492,7 +1558,7 @@ class Ui_MainWindow(object):
 
     def cliqueNormais(self):
         self.abrirMensagens()
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         self.listaMensagensDeRotinas_4.clear()
@@ -1512,7 +1578,7 @@ class Ui_MainWindow(object):
 
     def cliqueMensais(self):
         self.abrirMensagens()
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         self.listaMensagensDeRotinas_4.clear()
@@ -1527,6 +1593,24 @@ class Ui_MainWindow(object):
         conexao.close()
 
 
+
+
+
+    def cliqueDeDias(self):
+        self.abrirMensagens()
+        conexao = sqlite3.connect(rf'{self.localContent}')
+        cursor = conexao.cursor()
+
+        self.listaMensagensDeRotinas_4.clear()
+
+        msgs = extrairMensagensPersonalizada(cursor)
+
+        for i in msgs:
+            self.listaMensagensDeRotinas_4.addItem(i[8])
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
 
     # def cliqueDeDias(self):
     #     self.abrirMensagens()
@@ -1556,7 +1640,7 @@ class Ui_MainWindow(object):
     def excluirMensagem(self):
 
 
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
         try:
             if self.listaMensagensDeRotinas_4.count() != 0:
@@ -1573,7 +1657,7 @@ class Ui_MainWindow(object):
         cursor.close()
         conexao.close()
 
-        conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
 
         apagarRotinasInterface(cursor)

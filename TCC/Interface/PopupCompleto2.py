@@ -21,6 +21,7 @@ import ast
 from pyautogui import hotkey
 
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -28,8 +29,8 @@ class Ui_Form(object):
         Form.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         Form.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
-        self.local = os.getcwd() + '\InterfaceDB.db'
-        self.localFILE = os.getcwd()
+
+        self.InformacoesEPath()
         self.frame_7 = QtWidgets.QFrame(Form)
         self.frame_7.setGeometry(QtCore.QRect(10, 0, 981, 721))
         self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -2151,6 +2152,19 @@ class Ui_Form(object):
         self.botaoSimSimNao.setText(_translate("Form", "Sim"))
 
 
+    def InformacoesEPath(self):
+
+        Interface = f'{os.getcwd()}'
+
+
+        self.localContent = f'{Interface[:len(Interface)-10]}\\localContent.db'
+        self.InterfaceDB = f'{Interface}\\InterfaceDB.db'
+
+        conexao = sqlite3.connect(rf'{self.localContent}')
+        cursor = conexao.cursor()
+
+
+
     def __browseFileVcf(self):
         dir = os.getcwd()
         self.explorador = QtWidgets.QFileDialog.getOpenFileName(directory=dir, caption='OneTick Selecionar Imagem', filter="Vcard (*.vcf)")
@@ -2161,7 +2175,7 @@ class Ui_Form(object):
 
 
     def addVcf(self):
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
 
         self.cursor.execute('DELETE FROM Contatos')
@@ -2184,7 +2198,7 @@ class Ui_Form(object):
 
     def __gravar(self):
         #MUDAR PATH
-        self.conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        self.conexao = sqlite3.connect(rf'{self.localContent}')
         self.cursor = self.conexao.cursor()
 
         mensagens = extrairMensagens(cursor=self.cursor)
@@ -2223,8 +2237,20 @@ class Ui_Form(object):
                 executar_erro = self.radioSim.isChecked()
                 # seFlf.__coletarDados()
 
+                itemSelecionado = self.comboTipoDeEnvio_3.itemText(self.comboTipoDeEnvio_3.currentIndex())
+
+                if itemSelecionado == 'Personalizada':
+                    dia = 'Personalizada'
+                    executar_erro = dados[2]
+
+
+
+
                 print(type(dia))
                 print(dia)
+
+
+
                 if len(dia) > 1 and type(dia) is list:
                     count = 0
                     count2 = ''
@@ -2240,6 +2266,7 @@ class Ui_Form(object):
                             ' VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (
                             str(mensagens), horario, str(diaLista), str(remetente), tipo_remetente, contem_midia,
                             data_criada, hora_criada, str(nome_rotina)+str(count2), str(executar_erro),))
+
                 else:
                     self.cursor.execute(
                     'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente, contem_midia, data_criada, hora_criada, nome_rotina, executar_erro)'
@@ -2254,11 +2281,6 @@ class Ui_Form(object):
                 # for elemento in self.cursor.fetchall():
 
 
-
-                self.cursor.execute('SELECT * FROM informacoes')
-                print(self.cursor.fetchall())
-                if not self.cursor.fetchall():
-                    self.cursor.execute('INSERT INTO Informacoes (local) VALUES(?)', (self.localFILE, ))
 
 
                 atualizarDados(cursor=self.cursor)
@@ -2303,6 +2325,7 @@ class Ui_Form(object):
             for i in range(0, self.listaDiasPersonalizado_3.count()):
                 self.Dias.append(self.listaDiasPersonalizado_3.item(i).text())
                 print(self.Dias)
+
         elif itemSelecionado == 'Calendário':
             self.Dias = []
             for i in range(0, self.listaDiasSelecionados_3.count()):
@@ -2379,6 +2402,8 @@ class Ui_Form(object):
 
         return self.mensagensFormatadas, self.horario, self.Dias, self.remetente, self.tipo_Remetente, self.contem_midia,\
                self.dia_atual, self.hora_atual
+
+
 
 
 
@@ -2596,7 +2621,7 @@ class Ui_Form(object):
 
 
     def salvarVariavel(self):
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
 
         if self.caixaNomeVariavel.text().strip() != "" and self.caixaConteudoVariavel.text().strip() != "":
@@ -2639,7 +2664,7 @@ class Ui_Form(object):
         if self.__verificarNumero(num_add) and nome_add != '':
 
 
-            self.conexao = sqlite3.connect(self.local)
+            self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
             self.cursor = self.conexao.cursor()
             try:
                 self.cursor.execute(f'INSERT INTO Contatos (nome, numero) VALUES(?, ?)', (nome_add, num_add))
@@ -2658,7 +2683,7 @@ class Ui_Form(object):
 
 
     def criarGrupo(self):
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
         grupo = self.caixaNumeroPersonalizado_5.text().strip()
 
@@ -2715,7 +2740,7 @@ class Ui_Form(object):
 
 
     def __preencherGrupos(self):
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
 
         try:
@@ -2730,7 +2755,7 @@ class Ui_Form(object):
 
 
     def __preencherContatos(self):
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
 
         try:
@@ -2749,7 +2774,7 @@ class Ui_Form(object):
 
     def __preencherVariaveis(self):
 
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
         try:
             self.variaveisEConteudos = {}
@@ -2950,7 +2975,7 @@ class Ui_Form(object):
     def filtrar(self):
         filtro = self.caixaFiltrarRemetentes.text()
 
-        self.conexao = sqlite3.connect(self.local)
+        self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
 
         try:

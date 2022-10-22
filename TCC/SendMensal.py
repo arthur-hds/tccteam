@@ -30,7 +30,7 @@ class Mensagem:
         print(close.stderr)
         self.options = webdriver.ChromeOptions()
 
-        self.options.add_argument(f'user-data-dir=C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data')
+        self.options.add_argument(f'user-data-dir={os.path.expanduser("~")}\\AppData\\Local\\Google\\Chrome\\User Data')
         # self.options.add_argument('--profile-directory=Profile 2')
 
         self.driver = webdriver.Chrome(options=self.options)
@@ -183,7 +183,14 @@ class Mensagem:
     def __quit(self):
         self.driver.quit()
 
-conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+
+Interface = f'{os.getcwd()}'
+localContent = f'{Interface[:len(Interface)]}\\localContent.db'
+InterfaceDB = f'{Interface}\\Interface\\InterfaceDB.db'
+print(localContent)
+print(InterfaceDB)
+
+conexao = sqlite3.connect(rf'{localContent}')
 cursor = conexao.cursor()
 
 
