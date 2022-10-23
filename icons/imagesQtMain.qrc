@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="pics">
+    <file>OneTickWhiteOneTickQT.png</file>
+    <file>WhatsappBackgroundQT.jpg</file>
+    <file>whatsapp_webQT.jpg</file>
+    <file>24x24/cil-description.png</file>
+    <file>TabIconQT.png</file>
+    <file>24x24/cil-menu.png</file>
+    <file>20x20/cil-x-circle.png</file>
+    <file>20x20/cil-check.png</file>
+    <file>24x24/cil-options.png</file>
+    <file>24x24/cil-reload.png</file>
+    <file>OneTickLogoQT2.png</file>
+    <file>OneTickLogoQT.png</file>
+  </qresource>
+</RCC>

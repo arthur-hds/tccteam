@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from subprocess import CREATE_NO_WINDOW
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
 import arrow
 import sqlite3
 import subprocess
@@ -204,7 +205,7 @@ class Mensagem(object):
 
 
 PathlocalContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-PathInterface = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
+PathInterface = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\InterfaceDB.db'
 
 conexao = sqlite3.connect(PathlocalContent)
 cursor = conexao.cursor()

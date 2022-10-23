@@ -334,7 +334,7 @@ def criarRotinaDiaria(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendDaily.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendDaily.exe'
 
 
     __apagarRotina('OneTickMensagemDiaria')
@@ -360,7 +360,7 @@ def criarRotinaSemanal(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendSemanal.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendSemanal.exe'
 
 
     __apagarRotina('OneTickMensagemSemanal')
@@ -385,7 +385,7 @@ def criarRotinaMensal(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendMensal.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendMensal.exe'
 
 
     __apagarRotina('OneTickMensagemMensal')
@@ -413,7 +413,7 @@ def criarRotinaNormal(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\Send.exe'
 
     __apagarRotina('OneTickMensagemNormal')
 
@@ -437,7 +437,7 @@ def criarRotinaPersonalizada(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendPersonalizada.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendPersonalizada.exe'
 
 
     __apagarRotina('OneTickMensagemPersonalizada')
@@ -498,7 +498,7 @@ def atualizarRotinaDiariaInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendDaily.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendDaily.exe'
 
 
     __apagarRotina('OneTickMensagemDiaria')
@@ -516,7 +516,7 @@ def atualizarRotinaSemanalInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendSemanal.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendSemanal.exe'
 
 
     __apagarRotina('OneTickMensagemSemanal')
@@ -533,7 +533,7 @@ def atualizarRotinaMensalInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendMensal.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendMensal.exe'
 
 
     __apagarRotina('OneTickMensagemMensal')
@@ -556,7 +556,7 @@ def atualizarRotinaNormalInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\Send.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\Send.exe'
 
 
     __apagarRotina('OneTickMensagemNormal')
@@ -575,7 +575,7 @@ def atualizarRotinaPersonalizadaInterface(cursor):
 
     cursor.execute('SELECT * FROM informacoes')
 
-    pasta = cursor.fetchone()[0] + '\SendPersonalizada.exe'
+    pasta = cursor.fetchone()[0] + '\TCC\SendPersonalizada.exe'
 
 
     __apagarRotina('OneTickMensagemPersonalizada')
@@ -818,7 +818,6 @@ cursor = conexao.cursor()
 
 
 atualizarDados(cursor)
-
 
 #
 conexao.commit()

@@ -208,7 +208,7 @@ class Mensagem(object):
 
 
 PathlocalContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-PathInterface = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
+PathInterface = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\InterfaceDB.db'
 
 conexao = sqlite3.connect(PathlocalContent)
 cursor = conexao.cursor()
