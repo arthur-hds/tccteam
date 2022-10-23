@@ -33,7 +33,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.SendMensal">
+  <component name="RunManager" selected="Python.OneTick (1)">
     <configuration name="OneTick (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="tccteam" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -141,11 +141,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.SendMensal" />
         <item itemvalue="Python.OneTick (1)" />
+        <item itemvalue="Python.PopupMensagens" />
+        <item itemvalue="Python.SendMensal" />
         <item itemvalue="Python.bibliotecas" />
         <item itemvalue="Python.SendDaily" />
-        <item itemvalue="Python.PopupMensagens" />
       </list>
     </recent_temporary>
   </component>
@@ -243,6 +243,21 @@
           <url>file://$PROJECT_DIR$/TCC/bibliotecas.py</url>
           <line>469</line>
           <option name="timeStamp" value="212" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PopupMensagens.py</url>
+          <line>2533</line>
+          <option name="timeStamp" value="214" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PopupMensagens.py</url>
+          <line>2534</line>
+          <option name="timeStamp" value="215" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PopupMensagens.py</url>
+          <line>2546</line>
+          <option name="timeStamp" value="217" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

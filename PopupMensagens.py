@@ -2480,113 +2480,115 @@ class Ui_Form(object):
 
 
     def __verificar(self):
+        try:
+            currentIndex = self.stackedWidget_3.currentIndex()
+            self.qntd_Mensagens = self.listaMensagensSalvas_3.count()
+            tipo_RemetenteCtt = self.radioContato_3.isChecked()
+            tipo_RemetenteGpp = self.radioGrupo_3.isChecked()
+            qntd_listaDias = self.listaDiasPersonalizado_3.count()
+            qntd_listaDiasSelecionados = self.listaDiasSelecionados_3.count()
 
-        currentIndex = self.stackedWidget_3.currentIndex()
-        self.qntd_Mensagens = self.listaMensagensSalvas_3.count()
-        tipo_RemetenteCtt = self.radioContato_3.isChecked()
-        tipo_RemetenteGpp = self.radioGrupo_3.isChecked()
-        qntd_listaDias = self.listaDiasPersonalizado_3.count()
-        qntd_listaDiasSelecionados = self.listaDiasSelecionados_3.count()
-
-        # Caixa de mensagens
-        if self.qntd_Mensagens == 0 and currentIndex == 0:
-            self.__popupErro('Erro em mensagens', 'Nenhuma mensagem foi selecionada para envio')
-            return False
-
-
-        # Radios Contato e Grupo
-        if tipo_RemetenteCtt is False and tipo_RemetenteGpp is False and currentIndex == 1:
-            self.__popupErro('Erro em seleção', 'Nenhum tipo de envio foi selecionado')
-            return False
-        elif currentIndex == 1:
-            if tipo_RemetenteGpp is True:
-                self.tipo_Remetente = 'Grupo'
-            else:
-                self.tipo_Remetente = 'Contato'
-
-            if self.listaRemetentesSelecionados.count() == 0:
-                self.__popupErro('Erro', 'Não há nenhum contato ou grupo selecionado para envio')
-
+            # Caixa de mensagens
+            if self.qntd_Mensagens == 0 and currentIndex == 0:
+                self.__popupErro('Erro em mensagens', 'Nenhuma mensagem foi selecionada para envio')
                 return False
 
 
-        # Caixa Personalizada
-        if qntd_listaDias == 0 and self.comboTipoDeEnvio_3.itemText(
-                self.comboTipoDeEnvio_3.currentIndex()) == 'Personalizada' and currentIndex == 2:
-
-                self.__popupErro('Erro de personalização', 'Os dias semanais não foram\n informados corretamente')
+            # Radios Contato e Grupo
+            if tipo_RemetenteCtt is False and tipo_RemetenteGpp is False and currentIndex == 1:
+                self.__popupErro('Erro em seleção', 'Nenhum tipo de envio foi selecionado')
                 return False
+            elif currentIndex == 1:
+                if tipo_RemetenteGpp is True:
+                    self.tipo_Remetente = 'Grupo'
+                else:
+                    self.tipo_Remetente = 'Contato'
 
-        elif qntd_listaDiasSelecionados == 0 and self.comboTipoDeEnvio_3.itemText(
-                self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário' and currentIndex == 2:
+                if self.listaRemetentesSelecionados.count() == 0:
+                    self.__popupErro('Erro', 'Não há nenhum contato ou grupo selecionado para envio')
 
-                self.__popupErro('Erro de personalização', 'Os dias do calendário não foram\n informados corretamente')
-                return False
-
+                    return False
 
 
-        #HORARIO JA PASSOU
-        elif self.comboTipoDeEnvio_3.itemText(
-        self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário' and currentIndex == 2:
-            if not self.__horarioPassado():
-                return False
+            # Caixa Personalizada
+            if qntd_listaDias == 0 and self.comboTipoDeEnvio_3.itemText(
+                    self.comboTipoDeEnvio_3.currentIndex()) == 'Personalizada' and currentIndex == 2:
 
-        self.conexao = sqlite3.connect(rf'{self.localContent}')
-        self.cursor = self.conexao.cursor()
+                    self.__popupErro('Erro de personalização', 'Os dias semanais não foram\n informados corretamente')
+                    return False
 
-        if currentIndex == 2:
-            hora = self.spinBoxHora.text()
-            minuto = self.spinBoxMinuto.text()
+            elif qntd_listaDiasSelecionados == 0 and self.comboTipoDeEnvio_3.itemText(
+                    self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário' and currentIndex == 2:
 
-            if int(hora) < 10:
-                hora = f'0{hora}'
-            if int(minuto) < 10:
-                minuto = f'0{minuto}'
-
-            horarioStr = f'{hora}:{minuto}'
-            for msg in extrairHorarios(self.cursor):
-                if horarioStr == msg:
-                    self.__popupErro('Erro ao informar Horário', 'Já há outra rotina nesse tempo')
+                    self.__popupErro('Erro de personalização', 'Os dias do calendário não foram\n informados corretamente')
                     return False
 
 
 
+            #HORARIO JA PASSOU
+            elif self.comboTipoDeEnvio_3.itemText(
+            self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário' and currentIndex == 2:
+                if not self.__horarioPassado():
+                    return False
+
+            self.conexao = sqlite3.connect(rf'{self.localContent}')
+            self.cursor = self.conexao.cursor()
+
+            if currentIndex == 2:
+                hora = self.spinBoxHora.text()
+                minuto = self.spinBoxMinuto.text()
+
+                if int(hora) < 10:
+                    hora = f'0{hora}'
+                if int(minuto) < 10:
+                    minuto = f'0{minuto}'
+
+                horarioStr = f'{hora}:{minuto}'
+                for msg in extrairHorarios(self.cursor):
+                    if horarioStr == msg:
+                        self.__popupErro('Erro ao informar Horário', 'Já há outra rotina nesse tempo')
+                        return False
 
 
-        if extrairMensagensPersonalizada(self.cursor) and self.comboTipoDeEnvio_3.itemText(
-                self.comboTipoDeEnvio_3.currentIndex()) == 'Personalizada' and currentIndex == 2:
-                self.__popupErro('Erro ao salvar personalizada', 'Parece que já existe uma rotina criada')
+
+
+
+            if extrairMensagensPersonalizada(self.cursor) and self.comboTipoDeEnvio_3.itemText(
+                    self.comboTipoDeEnvio_3.currentIndex()) == 'Personalizada' and currentIndex == 2:
+                    self.__popupErro('Erro ao salvar personalizada', 'Parece que já existe uma rotina criada')
+                    self.conexao.commit()
+                    self.cursor.close()
+                    self.conexao.close()
+                    return False
+            else:
                 self.conexao.commit()
                 self.cursor.close()
                 self.conexao.close()
+
+
+
+
+
+            if currentIndex == 2:
+                if self.comboTipoDeEnvio_3.itemText(self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário':
+                    self.radioNao.setVisible(True)
+                    self.radioSim.setVisible(True)
+                    self.label_75.setVisible(True)
+                    self.label_76.setVisible(True)
+                else:
+                    self.radioNao.setVisible(False)
+                    self.radioSim.setVisible(False)
+                    self.label_75.setVisible(False)
+                    self.label_76.setVisible(False)
+
+
+
+                self.__coletarDados()
+                self.textoQntMsg_3.setText(str(self.qntd_Mensagens))
+                self.textoQntDias_3.setText(str(self.Dias))
+                self.textoHorarioEnvio_3.setText(str(self.horario))
+        except:
                 return False
-        else:
-            self.conexao.commit()
-            self.cursor.close()
-            self.conexao.close()
-
-
-
-
-
-        if currentIndex == 2:
-            if self.comboTipoDeEnvio_3.itemText(self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário':
-                self.radioNao.setVisible(True)
-                self.radioSim.setVisible(True)
-                self.label_75.setVisible(True)
-                self.label_76.setVisible(True)
-            else:
-                self.radioNao.setVisible(False)
-                self.radioSim.setVisible(False)
-                self.label_75.setVisible(False)
-                self.label_76.setVisible(False)
-
-
-
-            self.__coletarDados()
-            self.textoQntMsg_3.setText(str(self.qntd_Mensagens))
-            self.textoQntDias_3.setText(str(self.Dias))
-            self.textoHorarioEnvio_3.setText(str(self.horario))
 
 
 
@@ -2787,7 +2789,7 @@ class Ui_Form(object):
                 self.barraMomento_3.setValue(self.barraMomento_3.value() + 32)
                 index = self.stackedWidget_3.currentIndex()
                 self.stackedWidget_3.setCurrentIndex(index + 1)
-        # self.coletarDados()
+        #  self.coletarDados()
 
 
 

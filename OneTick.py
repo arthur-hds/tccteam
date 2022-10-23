@@ -1460,106 +1460,108 @@ class Ui_MainWindow(object):
 
         conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()
-
-        if extrairMensagensEnvio(cursor):
-            mensagensPassadas(cursor)
+        try:
             if extrairMensagensEnvio(cursor):
-                self.stackedWidgetNormais_4.setCurrentIndex(0)
-                msgsFaltantes = 0
-                for i in range(0, len(extrairMensagensEnvio(cursor))):
-                    if extrairMensagensEnvio(cursor)[i][10] == 'PENDENTE':
-                        msgsFaltantes += 1
+                mensagensPassadas(cursor)
+                if extrairMensagensEnvio(cursor):
+                    self.stackedWidgetNormais_4.setCurrentIndex(0)
+                    msgsFaltantes = 0
+                    for i in range(0, len(extrairMensagensEnvio(cursor))):
+                        if extrairMensagensEnvio(cursor)[i][10] == 'PENDENTE':
+                            msgsFaltantes += 1
 
-                self.textoHorarioNormais1_4.setText(extrairMensagensEnvio(cursor)[0][1])
-                self.textoMsgFaltandoNormais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                    self.textoHorarioNormais1_4.setText(extrairMensagensEnvio(cursor)[0][1])
+                    self.textoMsgFaltandoNormais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                else:
+                    self.stackedWidgetNormais_4.setCurrentIndex(1)
+
             else:
                 self.stackedWidgetNormais_4.setCurrentIndex(1)
 
-        else:
-            self.stackedWidgetNormais_4.setCurrentIndex(1)
 
-
-
-        if extrairMensagensDiaria(cursor):
-            self.stackedWidgetDiarias_4.setCurrentIndex(0)
 
             if extrairMensagensDiaria(cursor):
-                msgsFaltantes = 0
-                msgsTotais = len(extrairMensagensDiaria(cursor))
-                for i in range(0, len(extrairMensagensDiaria(cursor))):
-                    if extrairMensagensDiaria(cursor)[i][10] == 'PENDENTE':
-                        msgsFaltantes += 1
+                self.stackedWidgetDiarias_4.setCurrentIndex(0)
 
-                msgsEnviadas = msgsTotais - msgsFaltantes
+                if extrairMensagensDiaria(cursor):
+                    msgsFaltantes = 0
+                    msgsTotais = len(extrairMensagensDiaria(cursor))
+                    for i in range(0, len(extrairMensagensDiaria(cursor))):
+                        if extrairMensagensDiaria(cursor)[i][10] == 'PENDENTE':
+                            msgsFaltantes += 1
 
-                self.textoHorarioDiarias1_4.setText(extrairMensagensDiaria(cursor)[0][1])
-                self.textoHorarioDiarias2_4.setText(extrairMensagensDiaria(cursor)[0][1])
-                self.textoMsgFaltandoDiarias_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
-                self.textoMsgEnviadasDiaria_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
-            # self.textoMsgFaltandoDiarias_4.setText('')
-        else:
-            self.stackedWidgetDiarias_4.setCurrentIndex(1)
+                    msgsEnviadas = msgsTotais - msgsFaltantes
+
+                    self.textoHorarioDiarias1_4.setText(extrairMensagensDiaria(cursor)[0][1])
+                    self.textoHorarioDiarias2_4.setText(extrairMensagensDiaria(cursor)[0][1])
+                    self.textoMsgFaltandoDiarias_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                    self.textoMsgEnviadasDiaria_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
+                # self.textoMsgFaltandoDiarias_4.setText('')
+            else:
+                self.stackedWidgetDiarias_4.setCurrentIndex(1)
 
 
-
-        if extrairMensagensMensal(cursor):
-            self.stackedWidgetMensais_4.setCurrentIndex(0)
 
             if extrairMensagensMensal(cursor):
-                msgsFaltantes = 0
-                msgsTotais = len(extrairMensagensMensal(cursor))
-                for i in range(0, len(extrairMensagensMensal(cursor))):
-                    if extrairMensagensMensal(cursor)[i][10] == 'PENDENTE':
-                        msgsFaltantes += 1
+                self.stackedWidgetMensais_4.setCurrentIndex(0)
 
-                msgsEnviadas = msgsTotais - msgsFaltantes
-                self.textoHorarioMensais1_4.setText(extrairMensagensMensal(cursor)[0][1])
-                self.textoHorarioMensais2_4.setText(extrairMensagensMensal(cursor)[0][1])
-                self.textoMsgFaltandoMensais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
-                self.textoMsgEnviadasMensais_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
+                if extrairMensagensMensal(cursor):
+                    msgsFaltantes = 0
+                    msgsTotais = len(extrairMensagensMensal(cursor))
+                    for i in range(0, len(extrairMensagensMensal(cursor))):
+                        if extrairMensagensMensal(cursor)[i][10] == 'PENDENTE':
+                            msgsFaltantes += 1
 
-        else:
-            self.stackedWidgetMensais_4.setCurrentIndex(1)
+                    msgsEnviadas = msgsTotais - msgsFaltantes
+                    self.textoHorarioMensais1_4.setText(extrairMensagensMensal(cursor)[0][1])
+                    self.textoHorarioMensais2_4.setText(extrairMensagensMensal(cursor)[0][1])
+                    self.textoMsgFaltandoMensais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                    self.textoMsgEnviadasMensais_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
+
+            else:
+                self.stackedWidgetMensais_4.setCurrentIndex(1)
 
 
-        if extrairMensagensSemanal(cursor):
-            self.stackedWidgetSemanais_4.setCurrentIndex(0)
             if extrairMensagensSemanal(cursor):
-                msgsFaltantes = 0
-                msgsTotais = len(extrairMensagensSemanal(cursor))
-                for i in range(0, len(extrairMensagensSemanal(cursor))):
-                    if extrairMensagensSemanal(cursor)[i][10] == 'PENDENTE':
-                        msgsFaltantes += 1
+                self.stackedWidgetSemanais_4.setCurrentIndex(0)
+                if extrairMensagensSemanal(cursor):
+                    msgsFaltantes = 0
+                    msgsTotais = len(extrairMensagensSemanal(cursor))
+                    for i in range(0, len(extrairMensagensSemanal(cursor))):
+                        if extrairMensagensSemanal(cursor)[i][10] == 'PENDENTE':
+                            msgsFaltantes += 1
 
-                msgsEnviadas = msgsTotais - msgsFaltantes
-                self.textoHorarioSemanais1_4.setText(extrairMensagensSemanal(cursor)[0][1])
-                self.textoMsgEnviadasSemanais2_4.setText(extrairMensagensSemanal(cursor)[0][1])
-                self.textoMsgFaltandoSemanais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
-                self.textoMsgEnviadasSemanais_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
-        else:
-            self.stackedWidgetSemanais_4.setCurrentIndex(1)
-
-
-
-
+                    msgsEnviadas = msgsTotais - msgsFaltantes
+                    self.textoHorarioSemanais1_4.setText(extrairMensagensSemanal(cursor)[0][1])
+                    self.textoMsgEnviadasSemanais2_4.setText(extrairMensagensSemanal(cursor)[0][1])
+                    self.textoMsgFaltandoSemanais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                    self.textoMsgEnviadasSemanais_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
+            else:
+                self.stackedWidgetSemanais_4.setCurrentIndex(1)
 
 
-        if extrairMensagensPersonalizada(cursor):
-            self.stackedWidgetDias_4.setCurrentIndex(0)
+
+
+
+
             if extrairMensagensPersonalizada(cursor):
-                msgsFaltantes = 0
-                msgsTotais = len(extrairMensagensPersonalizada(cursor))
-                for i in range(0, len(extrairMensagensPersonalizada(cursor))):
-                    if extrairMensagensPersonalizada(cursor)[i][10] == 'PENDENTE':
-                        msgsFaltantes += 1
+                self.stackedWidgetDias_4.setCurrentIndex(0)
+                if extrairMensagensPersonalizada(cursor):
+                    msgsFaltantes = 0
+                    msgsTotais = len(extrairMensagensPersonalizada(cursor))
+                    for i in range(0, len(extrairMensagensPersonalizada(cursor))):
+                        if extrairMensagensPersonalizada(cursor)[i][10] == 'PENDENTE':
+                            msgsFaltantes += 1
 
-                msgsEnviadas = msgsTotais - msgsFaltantes
-                self.textoHorarioDias1_4.setText(extrairMensagensPersonalizada(cursor)[0][1])
-                self.textoHorarioDias2_4.setText(extrairMensagensPersonalizada(cursor)[0][1])
-                self.textoMsgFaltandoDias_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
-                self.textoMsgEnviadasDias_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
-        else:
-            self.stackedWidgetDias_4.setCurrentIndex(1)
+                    msgsEnviadas = msgsTotais - msgsFaltantes
+                    self.textoHorarioDias1_4.setText(extrairMensagensPersonalizada(cursor)[0][1])
+                    self.textoHorarioDias2_4.setText(extrairMensagensPersonalizada(cursor)[0][1])
+                    self.textoMsgFaltandoDias_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+                    self.textoMsgEnviadasDias_4.setText(f'{msgsEnviadas} MENSAGENS JÁ FORAM')
+            else:
+                self.stackedWidgetDias_4.setCurrentIndex(1)
+        except:
+            pass
 
 
 

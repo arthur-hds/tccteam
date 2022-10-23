@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1179</width>
-    <height>0</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="pageLogin">
      <widget class="QLabel" name="label_86">
@@ -2414,6 +2414,7 @@ color: rgb(255, 255, 255);
       </property>
      </widget>
      <zorder>widgetAbrirMensagens</zorder>
+     <zorder>widgetOpcoes</zorder>
      <zorder>widgetRotinasDeDias</zorder>
      <zorder>label_68</zorder>
      <zorder>widgetRotinasMensais</zorder>
@@ -2423,7 +2424,6 @@ color: rgb(255, 255, 255);
      <zorder>widgetTab</zorder>
      <zorder>widgetRotinasDiarias</zorder>
      <zorder>botaoAtualizarRotinas</zorder>
-     <zorder>widgetOpcoes</zorder>
     </widget>
    </widget>
   </widget>
