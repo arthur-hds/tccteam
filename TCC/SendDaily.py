@@ -27,7 +27,6 @@ class Mensagem(object):
         close = subprocess.run("taskkill /im chrome.exe /f", shell=True, stderr=True)
 
         # os.system("taskkill /im chrome.exe /f").as_integer_ratio()
-        print(close.stderr)
         self.options = webdriver.ChromeOptions()
         self.options.add_experimental_option("excludeSwitches", ['enable-automation'])
         self.options.add_argument(f'user-data-dir={os.path.expanduser("~")}\\AppData\\Local\\Google\\Chrome\\User Data')
@@ -44,14 +43,13 @@ class Mensagem(object):
 
         # FAZ ESPERAR O USUARIO LOGAR COM O CELULAR // XPATH = HEADER DO USUARIO
         try:
-            esperar = WebDriverWait(driver=self.driver, timeout=100).until(
+            esperar = WebDriverWait(driver=self.driver, timeout=50).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
         except:
             self.driver.refresh()
             esperar = WebDriverWait(driver=self.driver, timeout=100).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
 
-        print(esperar)
         sleep(3)
 
 
@@ -73,7 +71,6 @@ class Mensagem(object):
             if self.tipo == 'Contato':
                 # MANDAR PARA CONTATOS
                 for i in self.ctt:
-                    print(i)
                     link = f'https://web.whatsapp.com/send?phone={i}'
                     self.driver.get(link)
 
@@ -134,13 +131,12 @@ class Mensagem(object):
         for j in self.msg:
             # NOME DO DESTINATARIO VARIAVEL PRESENTE
             if '(Nome do destinatário)' in j and self.tipo == 'Contato':
-                conexaoInterface = sqlite3.connect(
-                    r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db')
+                conexaoInterface = sqlite3.connect(PathInterface)
                 cursorInterface = conexaoInterface.cursor()
 
                 NomesContatos = extrairContatos(cursorInterface)
                 for keys in NomesContatos.keys():
-                    if NomesContatos[keys] == nomeContato:
+                    if NomesContatos[keys] in nomeContato or nomeContato in NomesContatos[keys]:
                         j = j.replace('(Nome do destinatário)', keys)
                         break
 
@@ -165,7 +161,6 @@ class Mensagem(object):
                     self.driver.find_element(By.XPATH,
                                              '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
                         Keys.CONTROL + 'v')
-                    print('CONTROL V DADO')
 
                     sleep(4)
                     self.driver.find_element(By.XPATH,
@@ -198,9 +193,7 @@ class Mensagem(object):
                         Keys.ENTER)
                     sleep(2)
 
-                    print(self.driver.find_element(By.XPATH,
-                                                   '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div').get_attribute(
-                        'value'))
+
                     sleep(1)
 
 
@@ -214,16 +207,16 @@ class Mensagem(object):
 
 
 
+PathlocalContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
+PathInterface = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
 
-
-conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+conexao = sqlite3.connect(PathlocalContent)
 cursor = conexao.cursor()
 
 
 #
 msg = Mensagem(fechar=False)
 if msg.enviar():
-    msg.enviar()
     verificarDBDiaria(cursor)
 #
 

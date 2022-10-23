@@ -11,6 +11,7 @@ from subprocess import CREATE_NO_WINDOW
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.service import Service
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import *
 import icons.imagesQtMain
 import sys
 from bibliotecas import *
@@ -19,7 +20,7 @@ from pyautogui import hotkey
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from PopupCompleto2 import Ui_Form
+from PopupMensagens import Ui_Form
 
 
 
@@ -259,6 +260,7 @@ class Ui_MainWindow(object):
         self.botaoFechar_6.setGeometry(QtCore.QRect(710, 14, 50, 24))
         self.botaoFechar_6.setMinimumSize(QtCore.QSize(50, 0))
         self.botaoFechar_6.clicked.connect(self.abrirConfiguracoes)
+        self.botaoFechar_6.setCursor(Qt.PointingHandCursor)
         self.botaoFechar_6.setStyleSheet("QPushButton{\n"
 "    \n"
 "    background-color: rgb(145, 70, 255);\n"
@@ -293,6 +295,7 @@ class Ui_MainWindow(object):
         self.pushButton_17 = QtWidgets.QPushButton(self.widgetOpcoes)
         self.pushButton_17.setGeometry(QtCore.QRect(30, 90, 81, 41))
         self.pushButton_17.clicked.connect(self.resetarRotinasBotao)
+        self.pushButton_17.setCursor(Qt.PointingHandCursor)
         self.pushButton_17.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -345,6 +348,7 @@ class Ui_MainWindow(object):
         self.pushButton_18 = QtWidgets.QPushButton(self.widgetOpcoes)
         self.pushButton_18.setGeometry(QtCore.QRect(30, 210, 81, 41))
         self.pushButton_18.clicked.connect(self.deslogar)
+        self.pushButton_18.setCursor(Qt.PointingHandCursor)
         self.pushButton_18.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -578,6 +582,7 @@ class Ui_MainWindow(object):
         self.botaoCriarRotina = QtWidgets.QPushButton(self.pageOneTick)
         self.botaoCriarRotina.setGeometry(QtCore.QRect(568, 676, 61, 61))
         self.botaoCriarRotina.clicked.connect(self.mostrarPopup)
+        self.botaoCriarRotina.setCursor(Qt.PointingHandCursor)
         self.botaoCriarRotina.setStyleSheet("QPushButton{\n"
 "    \n"
 "    background-color: rgb(0, 170, 0);\n"
@@ -768,6 +773,7 @@ class Ui_MainWindow(object):
         self.botaoAtualizar_4 = QtWidgets.QPushButton(self.widgetTab)
         self.botaoAtualizar_4.setGeometry(QtCore.QRect(490, 34, 51, 41))
         self.botaoAtualizar_4.clicked.connect(self.verificarWhatsapp)
+        self.botaoAtualizar_4.setCursor(Qt.PointingHandCursor)
         self.botaoAtualizar_4.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -800,6 +806,7 @@ class Ui_MainWindow(object):
         self.botaoFechar = QtWidgets.QPushButton(self.widgetTab)
         self.botaoFechar.setGeometry(QtCore.QRect(1110, 34, 51, 41))
         self.botaoFechar.clicked.connect(QtWidgets.qApp.quit)
+        self.botaoFechar.setCursor(Qt.PointingHandCursor)
         self.botaoFechar.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -831,6 +838,7 @@ class Ui_MainWindow(object):
         self.botaoOpcoes_4 = QtWidgets.QPushButton(self.widgetTab)
         self.botaoOpcoes_4.setGeometry(QtCore.QRect(250, 35, 51, 41))
         self.botaoOpcoes_4.clicked.connect(self.abrirConfiguracoes)
+        self.botaoOpcoes_4.setCursor(Qt.PointingHandCursor)
         self.botaoOpcoes_4.setStyleSheet("\n"
 "QPushButton{\n"
 "    \n"
@@ -1056,6 +1064,7 @@ class Ui_MainWindow(object):
         self.botaoFecharListaMensagens_4.setGeometry(QtCore.QRect(530, 10, 50, 24))
         self.botaoFecharListaMensagens_4.setMinimumSize(QtCore.QSize(50, 0))
         self.botaoFecharListaMensagens_4.clicked.connect(self.abrirMensagens)
+        self.botaoFecharListaMensagens_4.setCursor(Qt.PointingHandCursor)
         self.botaoFecharListaMensagens_4.setStyleSheet("QPushButton{\n"
 "    \n"
 "    background-color: rgb(145, 70, 255);\n"
@@ -1077,6 +1086,7 @@ class Ui_MainWindow(object):
         self.listaMensagensDeRotinas_4 = QtWidgets.QListWidget(self.widgetAbrirMensagens)
         self.listaMensagensDeRotinas_4.setGeometry(QtCore.QRect(40, 60, 411, 211))
         self.listaMensagensDeRotinas_4.clicked.connect(self.mostrarBotaoExcluir)
+        self.listaMensagensDeRotinas_4.setCursor(Qt.PointingHandCursor)
         self.listaMensagensDeRotinas_4.setStyleSheet("QListWidget\n"
 "{\n"
 "border : 3px solid rgb(255,255,255);\n"
@@ -1100,6 +1110,7 @@ class Ui_MainWindow(object):
         self.botaoExcluir_4.setMinimumSize(QtCore.QSize(50, 0))
         self.botaoExcluir_4.setVisible(False)
         self.botaoExcluir_4.clicked.connect(self.excluirMensagem)
+        self.botaoExcluir_4.setCursor(Qt.PointingHandCursor)
         self.botaoExcluir_4.setStyleSheet("QPushButton{\n"
 "    \n"
 "    background-color: rgb(145, 70, 255);\n"
@@ -1128,6 +1139,7 @@ class Ui_MainWindow(object):
         self.botaoAtualizarRotinas = QtWidgets.QPushButton(self.pageOneTick)
         self.botaoAtualizarRotinas.setGeometry(QtCore.QRect(60, 210, 51, 41))
         self.botaoAtualizarRotinas.clicked.connect(self.verificarSeHaMensagensParaExibir)
+        self.botaoAtualizarRotinas.setCursor(Qt.PointingHandCursor)
         self.botaoAtualizarRotinas.setStyleSheet("\n"
  "QPushButton{\n"
  "    \n"
@@ -1449,9 +1461,9 @@ class Ui_MainWindow(object):
         cursor = conexao.cursor()
 
         if extrairMensagensEnvio(cursor):
-            self.stackedWidgetNormais_4.setCurrentIndex(0)
-
+            mensagensPassadas(cursor)
             if extrairMensagensEnvio(cursor):
+                self.stackedWidgetNormais_4.setCurrentIndex(0)
                 msgsFaltantes = 0
                 for i in range(0, len(extrairMensagensEnvio(cursor))):
                     if extrairMensagensEnvio(cursor)[i][10] == 'PENDENTE':
@@ -1459,6 +1471,9 @@ class Ui_MainWindow(object):
 
                 self.textoHorarioNormais1_4.setText(extrairMensagensEnvio(cursor)[0][1])
                 self.textoMsgFaltandoNormais_4.setText(f'{msgsFaltantes} MENSAGENS FALTANDO')
+            else:
+                self.stackedWidgetNormais_4.setCurrentIndex(1)
+
         else:
             self.stackedWidgetNormais_4.setCurrentIndex(1)
 

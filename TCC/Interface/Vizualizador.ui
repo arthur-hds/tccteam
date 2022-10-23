@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="pageLogin">
      <widget class="QLabel" name="label_86">
@@ -648,7 +648,7 @@ background:none;</string>
       <widget class="QLabel" name="label_72">
        <property name="geometry">
         <rect>
-         <x>49</x>
+         <x>60</x>
          <y>140</y>
          <width>201</width>
          <height>41</height>
@@ -1671,9 +1671,9 @@ background:none;</string>
       <widget class="QWidget" name="widgetAddVariaveis_17" native="true">
        <property name="geometry">
         <rect>
-         <x>630</x>
+         <x>560</x>
          <y>24</y>
-         <width>521</width>
+         <width>541</width>
          <height>61</height>
         </rect>
        </property>
@@ -1765,7 +1765,7 @@ background:none;</string>
       <widget class="QPushButton" name="botaoAtualizar_4">
        <property name="geometry">
         <rect>
-         <x>552</x>
+         <x>490</x>
          <y>34</y>
          <width>51</width>
          <height>41</height>
@@ -1867,6 +1867,49 @@ border:None;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="botaoAtualizar_5">
+       <property name="geometry">
+        <rect>
+         <x>1120</x>
+         <y>34</y>
+         <width>51</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+QPushButton{
+	
+	
+	
+	image: url(:/pics/20x20/cil-x-circle.png);
+	
+	background-color: rgb(128, 62, 226);
+	border:none;
+	border-radius:15%;
+	padding: 5px;
+	color:white;
+	font:87 23pt &quot;Arial Black&quot;;
+	color: rgb(0, 170, 0);
+}
+
+QPushButton:hover {
+
+background-color: ;
+	background-color: rgb(137, 66, 243);
+borderr-radius: 10px rgb(70, 70, 70);
+}
+QPushButton:pressed {
+
+background-color: rgbrgb(170, 0, 255);
+color: rgb(255, 255, 255);
+
+}</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>
@@ -2267,9 +2310,9 @@ color: (145, 70, 255);
        <property name="geometry">
         <rect>
          <x>470</x>
-         <y>170</y>
+         <y>110</y>
          <width>101</width>
-         <height>41</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="minimumSize">

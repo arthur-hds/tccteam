@@ -7,7 +7,8 @@ import os
 # from TCC.Interface.PopupCompleto1 import Ui_Form
 
 
-
+localContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
+InterfaceDB = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
 
 def horarios():
     atual = arrow.now()
@@ -129,7 +130,6 @@ def extrairMensagens(cursor):
 
     for elemento in cursor.fetchall():
         list(elemento)
-        # print(elemento)
         listaRetorno.append(elemento)
 
     return listaRetorno
@@ -145,7 +145,6 @@ def extrairHorarios(cursor):
 
     for elemento in cursor.fetchall():
         list(elemento)
-        # print(elemento)
         listaRetorno.append(elemento[0])
 
     return listaRetorno
@@ -227,19 +226,20 @@ def __agendar(elemento, tipo, cursor):
 def mensagensPassadas(cursor):
 
     while True:
-        info = extrairMensagensEnvio(cursor)[0]
-        mes = info[2][2:4]
-        dia = info[2][5:7]
+        try:
+            info = extrairMensagensEnvio(cursor)[0]
+            mes = info[2][2:4]
+            dia = info[2][5:7]
 
-        dia_int = int(f'{mes}{dia}')
-        dia_atual_int = int(f'{horarios()[2]}{horarios()[1]}')
+            dia_int = int(f'{mes}{dia}')
+            dia_atual_int = int(f'{horarios()[2]}{horarios()[1]}')
 
-        if dia_atual_int >= dia_int:
             hora = info[1][:2]
             minuto = info[1][3:]
             horario_int = int(int(f'{hora}{minuto}'))
             horario_atual_int = int(horarios()[0][:2] + horarios()[0][3:])
-            if horario_atual_int > horario_int:
+
+            if dia_atual_int > dia_int:
                 if info[9] == 'True':
                     cursor.execute(
                         'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente,'
@@ -249,18 +249,33 @@ def mensagensPassadas(cursor):
                         (info[0], horarios()[0], f"['{horarios()[2]}/{int(horarios()[1]) + 1}']", info[3], info[4],
                          info[5],
                          info[6], info[7], info[8], info[9], info[10]))
+                    verificarDBNormal(cursor)
+                else:
+                    verificarDBNormal(cursor)
+                    pass
+            elif dia_atual_int == dia_int and horario_atual_int > horario_int:
+                hora = info[1][:2]
+                minuto = info[1][3:]
+                horario_int = int(int(f'{hora}{minuto}'))
+                horario_atual_int = int(horarios()[0][:2] + horarios()[0][3:])
+                if info[9] == 'True':
+                    cursor.execute(
+                        'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente,'
+                        'contem_midia, data_criada, hora_criada, nome_rotina,'
+                        'executar_erro, status)'
+                        'VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+                        (info[0], horarios()[0], f"['{horarios()[2]}/{int(horarios()[1]) + 1}']", info[3], info[4],
+                         info[5],
+                         info[6], info[7], info[8], info[9], info[10]))
+                    verificarDBNormal(cursor)
 
-                verificarDBNormal(cursor)
+                else:
+                    verificarDBNormal(cursor)
+                    pass
             else:
                 break
-        else:
+        except:
             break
-
-
-
-
-
-
 
 
 
@@ -320,8 +335,7 @@ def criarRotinaDiaria(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendDaily.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemDiaria')
 
@@ -347,8 +361,7 @@ def criarRotinaSemanal(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendSemanal.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemSemanal')
 
@@ -373,13 +386,11 @@ def criarRotinaMensal(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendMensal.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemMensal')
 
 
-    print(horarios()[1])
     dataAtual = horarios()[1]
 
     rotina = subprocess.run(
@@ -403,8 +414,6 @@ def criarRotinaNormal(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\Send.exe'
-    print(pasta)
-    print(horario, data)
 
     __apagarRotina('OneTickMensagemNormal')
 
@@ -429,8 +438,7 @@ def criarRotinaPersonalizada(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendPersonalizada.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemPersonalizada')
 
@@ -447,8 +455,7 @@ def criarRotinaPersonalizada(cursor):
 
 
     datas = info[9]
-    print(datas)
-    print(type(datas))
+
     datas = ast.literal_eval(datas)
     diasFormatados = ''
     count = 0
@@ -463,7 +470,7 @@ def criarRotinaPersonalizada(cursor):
             diasFormatados += ','
             diasFormatados += traducaoDias[data]
 
-    print(diasFormatados)
+
 
 
     rotina = subprocess.run(
@@ -492,8 +499,7 @@ def atualizarRotinaDiariaInterface(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendDaily.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemDiaria')
 
@@ -511,8 +517,7 @@ def atualizarRotinaSemanalInterface(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendSemanal.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemSemanal')
 
@@ -529,8 +534,7 @@ def atualizarRotinaMensalInterface(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendMensal.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemMensal')
 
@@ -553,8 +557,7 @@ def atualizarRotinaNormalInterface(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\Send.exe'
-    print(pasta)
-    print(horario, data)
+
 
     __apagarRotina('OneTickMensagemNormal')
 
@@ -573,8 +576,7 @@ def atualizarRotinaPersonalizadaInterface(cursor):
     cursor.execute('SELECT * FROM informacoes')
 
     pasta = cursor.fetchone()[0] + '\SendPersonalizada.exe'
-    print(pasta)
-    print(horario)
+
 
     __apagarRotina('OneTickMensagemPersonalizada')
 
@@ -589,8 +591,6 @@ def atualizarRotinaPersonalizadaInterface(cursor):
     }
 
     datas = info[9]
-    print(datas)
-    print(type(datas))
     datas = ast.literal_eval(datas)
     diasFormatados = ''
     count = 0
@@ -603,7 +603,6 @@ def atualizarRotinaPersonalizadaInterface(cursor):
             diasFormatados += ','
             diasFormatados += traducaoDias[data]
 
-    print(diasFormatados)
 
     rotina = subprocess.run(
         f'schtasks /create /tn OneTickMensagemPersonalizada /tr {pasta} /SC weekly /D {diasFormatados} /ST {horario}',
@@ -625,7 +624,6 @@ def atualizarRotinaPersonalizadaInterface(cursor):
 def verificarDBNormal(cursor):
     if extrairMensagensEnvio(cursor):
         filaMensagens = extrairMensagensEnvio(cursor)[0]
-        print(filaMensagens)
         cursor.execute('UPDATE Mensagens SET status = "ENVIADO" WHERE mensagens = ? AND dia = ? AND data_criada = ? AND hora_criada = ? AND nome_rotina = ?',
                        (filaMensagens[0], filaMensagens[2], filaMensagens[6], filaMensagens[7], filaMensagens[8]))
 
@@ -644,7 +642,6 @@ def verificarDBNormal(cursor):
 
 def verificarDBDiaria(cursor):
     filaMensagens = extrairMensagensDiaria(cursor)[0]
-    print(filaMensagens)
     cursor.execute('SELECT * FROM Diaria WHERE status = "PENDENTE"')
     if not cursor.fetchall():
         cursor.execute(
@@ -673,7 +670,6 @@ def verificarDBMensal(cursor):
             'UPDATE Mensagens SET status = "PENDENTE" WHERE dia = "Mensal" AND status = "ENVIADO"')
         atualizarDados(cursor)
 
-    print(filaMensagens)
     try:
         criarRotinaMensal(cursor)
         cursor.execute(
@@ -695,7 +691,6 @@ def verificarDBSemanal(cursor):
             'UPDATE Mensagens SET status = "PENDENTE" WHERE dia = "Semanal" AND status = "ENVIADO"')
         atualizarDados(cursor)
 
-    print(filaMensagens)
     try:
         criarRotinaSemanal(cursor)
         cursor.execute(
@@ -762,7 +757,7 @@ def resetarRotinas(cursor):
 
 
 def extrairLogin():
-    conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+    conexao = sqlite3.connect(rf'{localContent}')
     cursor = conexao.cursor()
 
     cursor.execute('SELECT * FROM Login')
@@ -817,21 +812,13 @@ def atualizarLogin(cursor, numero):
 
 
 
-conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+conexao = sqlite3.connect(rf'{localContent}')
 cursor = conexao.cursor()
 #
 
 
-
 atualizarDados(cursor)
 
-# criarRotinaPersonalizada(cursor)
-# atualizarRotinaPersonalizadaInterface(cursor)
-# print(extrairMensagensEnvio(cursor))
-# apagarTodasRotinas(cursor)
-# atualizarRotinasInterface(cursor)
-# verificarDBNormal(cursor)
-# verificarDBDiaria(cursor)
 
 #
 conexao.commit()
