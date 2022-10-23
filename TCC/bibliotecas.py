@@ -7,9 +7,6 @@ import os
 # from TCC.Interface.PopupCompleto1 import Ui_Form
 
 
-Interface = f'{os.getcwd()}'
-localContent = f'{Interface[:len(Interface)]}\\localContent.db'
-InterfaceDB = f'{Interface}\\Interface\\InterfaceDB.db'
 
 
 def horarios():
@@ -138,6 +135,26 @@ def extrairMensagens(cursor):
     return listaRetorno
 
 
+
+def extrairHorarios(cursor):
+    listaRetorno = []
+    # cursor.execute('DELETE FROM Diaria')
+    cursor.execute(
+        'SELECT horario FROM Mensagens ORDER BY status DESC, dia ASC, horario ASC ')
+
+
+    for elemento in cursor.fetchall():
+        list(elemento)
+        # print(elemento)
+        listaRetorno.append(elemento[0])
+
+    return listaRetorno
+
+
+
+
+
+
 #CURSOR INTERFACE.DB
 def extrairContatos(cursor):
     listaContatos = {}
@@ -245,6 +262,9 @@ def mensagensPassadas(cursor):
 
 
 
+
+
+
 def atualizarDados(cursor):
     extrairMensagensEnvio(cursor)
     extrairMensagensSemanal(cursor)
@@ -275,10 +295,12 @@ def alterar_horario(horario, elemento):
 
 
 
+
 def __apagarRotina(tn):
     rotina = subprocess.run(
         f'schtasks /Delete /tn {tn} /F', shell=True,
         text=True)
+
 
 
 
@@ -740,7 +762,7 @@ def resetarRotinas(cursor):
 
 
 def extrairLogin():
-    conexao = sqlite3.connect(rf'{localContent}')
+    conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
     cursor = conexao.cursor()
 
     cursor.execute('SELECT * FROM Login')
@@ -773,8 +795,11 @@ def apagarTodasRotinas(cursor):
 def atualizarLogin(cursor, numero):
     if numero == 1:
         cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (numero, horarios()[0], "rgb(85, 255, 127)",))
-    else:
+    elif numero == 0:
         cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (numero, horarios()[0], "rgb(255, 0, 0)",))
+    else:
+        cursor.execute('UPDATE Login SET logado = ?, ultimo_acesso = ?, cor_status = ?', (1, horarios()[0], "rgb(255, 0, 0)",))
+
 
 
 
@@ -791,15 +816,15 @@ def atualizarLogin(cursor, numero):
 
 
 
-print(localContent)
 
-conexao = sqlite3.connect(rf'{localContent}')
+conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
 cursor = conexao.cursor()
 #
 
 
 
 atualizarDados(cursor)
+
 # criarRotinaPersonalizada(cursor)
 # atualizarRotinaPersonalizadaInterface(cursor)
 # print(extrairMensagensEnvio(cursor))

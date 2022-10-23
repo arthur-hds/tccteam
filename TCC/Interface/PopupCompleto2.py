@@ -16,7 +16,7 @@ import sys, sqlite3
 from PyQt5.QtCore import *
 from datetime import date
 import arrow
-from bibliotecas import atualizarDados, resetarRotinas, extrairMensagens, atualizarRotinasInterface
+from bibliotecas import atualizarDados, resetarRotinas, extrairMensagens, atualizarRotinasInterface, extrairMensagensPersonalizada, extrairHorarios
 import ast
 from pyautogui import hotkey
 
@@ -199,7 +199,7 @@ class Ui_Form(object):
         self.verticalLayout_15.setObjectName("verticalLayout_15")
         self.stackedWidget_3 = QtWidgets.QStackedWidget(self.frame_15)
         self.stackedWidget_3.setStyleSheet("QWidget{\n"
-"    background-color: rgb(87, 78, 117)\n"
+"    background-color: rgb(66, 59, 117)\n"
 "\n"
 "}\n"
 "QRadioButton::indicator {\n"
@@ -302,7 +302,6 @@ class Ui_Form(object):
 "border : 2px solid rgb(166, 104, 197);\n"
 "background:rgb(85, 0, 127)\n"
 "}")
-        self.listaMensagensSalvas_3.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         self.listaMensagensSalvas_3.setObjectName("listaMensagensSalvas_3")
         self.botaoAddVariaveis_3 = QtWidgets.QPushButton(self.frame_16)
         self.botaoAddVariaveis_3.setGeometry(QtCore.QRect(60, 240, 121, 21))
@@ -2140,7 +2139,7 @@ class Ui_Form(object):
         self.caixaDigitarNomeRotina.setPlaceholderText(_translate("Form", "Nome"))
         self.label_74.setText(_translate("Form", "Escreva o nome da sua rotina:"))
         self.label_75.setText(_translate("Form", "Caso haja erro ao executar a rotina,"))
-        self.label_76.setText(_translate("Form", "deseja enviá-las automaticamente?"))
+        self.label_76.setText(_translate("Form", "deseja adiar para o próximo dia?"))
         self.radioNao.setText(_translate("Form", "NÃO"))
         self.radioSim.setText(_translate("Form", "SIM"))
         self.tituloAlerta.setText(_translate("Form", "Titulo"))
@@ -2208,7 +2207,7 @@ class Ui_Form(object):
             for i in mensagens:
                 print(i[8])
                 print(self.caixaDigitarNomeRotina.text())
-                if i[8] == self.caixaDigitarNomeRotina.text() or self.caixaDigitarNomeRotina.text().strip() == '':
+                if i[8] == self.caixaDigitarNomeRotina.text() or self.caixaDigitarNomeRotina.text() == '':
                     self.__popupErro('Erro ao definir nome', 'O nome da rotina é nulo\nou ja está em uso')
                     nomeValido = False
                     break
@@ -2246,20 +2245,23 @@ class Ui_Form(object):
 
 
 
-                print(type(dia))
-                print(dia)
+
 
 
 
                 if len(dia) > 1 and type(dia) is list:
                     count = 0
-                    count2 = ''
                     for i in dia:
                         count += 1
+                        count2 = ''
                         if count == 1:
-                            count2 = 0
+                            count2 = ''
                         else:
-                            count += 1
+                            if count2 == '':
+                                count2 = 0
+                            else:
+                                count2 += 1
+                        count += 1
                         diaLista = [i]
                         self.cursor.execute(
                             'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente, contem_midia, data_criada, hora_criada, nome_rotina, executar_erro)'
@@ -2523,9 +2525,58 @@ class Ui_Form(object):
             if not self.__horarioPassado():
                 return False
 
+        self.conexao = sqlite3.connect(rf'{self.localContent}')
+        self.cursor = self.conexao.cursor()
+
+        if currentIndex == 2:
+            hora = self.spinBoxHora.text()
+            minuto = self.spinBoxMinuto.text()
+
+            if int(hora) < 10:
+                hora = f'0{hora}'
+            if int(minuto) < 10:
+                minuto = f'0{minuto}'
+
+            horarioStr = f'{hora}:{minuto}'
+            for msg in extrairHorarios(self.cursor):
+                if horarioStr == msg:
+                    self.__popupErro('Erro ao informar Horário', 'Já há outra rotina nesse tempo')
+                    return False
+
+
+
+
+
+        if extrairMensagensPersonalizada(self.cursor) and self.comboTipoDeEnvio_3.itemText(
+                self.comboTipoDeEnvio_3.currentIndex()) == 'Personalizada':
+                self.__popupErro('Erro ao salvar personalizada', 'Parece que já existe uma rotina criada')
+                self.conexao.commit()
+                self.cursor.close()
+                self.conexao.close()
+                return False
+        else:
+            self.conexao.commit()
+            self.cursor.close()
+            self.conexao.close()
+
+
+
 
 
         if currentIndex == 2:
+            if self.comboTipoDeEnvio_3.itemText(self.comboTipoDeEnvio_3.currentIndex()) == 'Calendário':
+                self.radioNao.setVisible(True)
+                self.radioSim.setVisible(True)
+                self.label_75.setVisible(True)
+                self.label_76.setVisible(True)
+            else:
+                self.radioNao.setVisible(False)
+                self.radioSim.setVisible(False)
+                self.label_75.setVisible(False)
+                self.label_76.setVisible(False)
+
+
+
             self.__coletarDados()
             self.textoQntMsg_3.setText(str(self.qntd_Mensagens))
             self.textoQntDias_3.setText(str(self.Dias))
@@ -2909,13 +2960,18 @@ class Ui_Form(object):
 
 
     def __atualizarOrdemMensagens(self):
+        msgsBackup = list(self.mensagensNaoFormatadas)
         self.mensagensNaoFormatadas.clear()
+
         for i in range(0, self.listaMensagensSalvas_3.count()):
             mensagem = self.listaMensagensSalvas_3.item(i).text()
             if '...' in mensagem[len(mensagem) - 3:]:
                 self.mensagensNaoFormatadas.append(mensagem[:len(mensagem) - 3])
             else:
-                self.mensagensNaoFormatadas.append(mensagem)
+                for j in msgsBackup:
+                   if os.path.basename(j) in mensagem:
+                      self.mensagensNaoFormatadas.append(j)
+                      break
 
 
 
@@ -2980,12 +3036,19 @@ class Ui_Form(object):
 
         try:
             self.listaContatos_3.clear()
-            self.contatosENumeros = {}
-            self.cursor.execute('SELECT * FROM Contatos ORDER BY nome ASC')
-            for elemento in self.cursor.fetchall():
-                if elemento[0][:len(filtro)].upper() == filtro.upper():
-                    self.contatosENumeros[elemento[0]] = elemento[1]
-                    self.listaContatos_3.addItem(elemento[0])
+            print(self.radioContato_3.isChecked())
+            if self.radioContato_3.isChecked():
+                self.contatosENumeros = {}
+                self.cursor.execute('SELECT * FROM Contatos ORDER BY nome ASC')
+                for elemento in self.cursor.fetchall():
+                    if elemento[0][:len(filtro)].upper() == filtro.upper():
+                        self.contatosENumeros[elemento[0]] = elemento[1]
+                        self.listaContatos_3.addItem(elemento[0])
+            else:
+                self.cursor.execute('SELECT * FROM Grupos ORDER BY nome ASC')
+                for elemento in self.cursor.fetchall():
+                    if elemento[0][:len(filtro)].upper() == filtro.upper():
+                        self.listaContatos_3.addItem(elemento[0])
         except:
             self.__popupErro('Erro ao preencher contatos', 'Erro ao importar contatos salvos')
 
