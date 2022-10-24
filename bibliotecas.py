@@ -4,7 +4,6 @@ from time import sleep
 import ast
 import arrow
 import os
-# from TCC.Interface.PopupCompleto1 import Ui_Form
 
 
 localContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
@@ -12,19 +11,11 @@ InterfaceDB = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\Inter
 
 def horarios():
     atual = arrow.now()
-    # data_criado = arrow.Arrow(2022, int(elemento[6][3:]), int(elemento[6][:2]))
 
     horario_atual = atual.format('HH:mm')
     dia_atual = atual.format('DD')
     mes_atual = atual.format('MM')
 
-    # dia_atual = atual.format('DD/MM')
-    # dia_semana = data_criado.shift(weeks=+1).format('DD/MM')
-    # dia_mes = data_criado.shift(months=+1).format('DD/MM')
-    #
-    # dia_semana = f"['{dia_semana}']"
-    # dia_atual = f"['{dia_atual}']"
-    # dia_mes = f"['{dia_mes}']"
 
     return horario_atual, dia_atual, mes_atual
 
@@ -166,25 +157,6 @@ def extrairContatos(cursor):
     return listaContatos
 
 
-# PEGA OS VALORES DADOS PELA UI E TRANSFORMA DE ACORDO COM SEUS VALORES
-# def converterParaEnvio(cursor):
-#
-#     cursor.execute('SELECT * FROM Mensagens ORDER BY dia ASC, horario ASC')
-#
-#     for elemento in cursor.fetchall():
-#         elemento = list(elemento)
-#
-#         if 'Diária' in elemento[2]:
-#             elemento[2] = elemento[2].replace('Diária', horario(elemento)[0])
-#         elif 'Semanal' in elemento[2]:
-#             elemento[2] = elemento[2].replace('Semanal', horario(elemento)[1])
-#         elif 'Mensal' in elemento[2]:
-#             elemento[2] = elemento[2].replace('Mensal', horario(elemento)[2])
-#         # elemento[0] = ast.literal_eval(elemento[0])
-#         # elemento[3] = ast.literal_eval(elemento[3])
-#         # elemento[2] = ast.literal_eval(elemento[2])
-#         __agendar(elemento, 'Envio')
-#     extrairMensagensEnvio(cursor)
 
 
 
@@ -300,12 +272,6 @@ def atualizarDados(cursor):
 
 
 
-# def checkAlteracoes():
-#     elemento = Ui_Form.
-#     cursor.execute(
-#         'INSERT INTO Mensagens (mensagens, horario, dia, remetente, tipo_remetente, contem_midia, data_criada, hora_criada)'
-#         'VALUES (?,?,?,?,?,?,?,?)', (elemento[0], elemento[1], elemento[2], elemento[3], elemento[4], elemento[5],
-#                                      elemento[6], elemento[7]))
 
 
 
@@ -485,15 +451,7 @@ def criarRotinaPersonalizada(cursor):
         shell=True,
         text=True)
 
-    # subprocess.run(f'schtasks /change /tn testeCMDbanana /st 14:00 ', shell=True, text=True, input='')
 
-
-    # self.rotina = subprocess.run(
-    #     f'schtasks /Delete /tn testeCMDbanana /F', shell=True,
-    #     text=True)
-
-
-        # self.rotina = subprocess.run('where python', shell=True, capture_output=True, text=True)
 
 
 
@@ -615,15 +573,7 @@ def atualizarRotinaPersonalizadaInterface(cursor):
         f'schtasks /create /tn OneTickMensagemPersonalizada /tr {pasta} /SC weekly /D {diasFormatados} /ST {horario}',
         shell=True,
         text=True)
-    # subprocess.run(f'schtasks /change /tn testeCMDbanana /st 14:00 ', shell=True, text=True, input='')
 
-
-    # self.rotina = subprocess.run(
-    #     f'schtasks /Delete /tn testeCMDbanana /F', shell=True,
-    #     text=True)
-
-
-        # self.rotina = subprocess.run('where python', shell=True, capture_output=True, text=True)
 
 
 

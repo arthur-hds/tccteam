@@ -2165,6 +2165,7 @@ class Ui_Form(object):
         self.botaoSimSimNao.setText(_translate("Form", "Sim"))
 
 
+# PEGA AS INFORMAÇÕES DE PATH
     def InformacoesEPath(self):
 
         Interface = f'{os.getcwd()}'
@@ -2177,7 +2178,7 @@ class Ui_Form(object):
         cursor = conexao.cursor()
 
 
-
+# JANELA PARA BUSCAR VCF
     def __browseFileVcf(self):
         dir = os.getcwd()
         self.explorador = QtWidgets.QFileDialog.getOpenFileName(directory=dir, caption='OneTick Selecionar Imagem', filter="Vcard (*.vcf)")
@@ -2187,6 +2188,7 @@ class Ui_Form(object):
         self.abrirPopupContato()
 
 
+#DEF PARA ADICIONAR OS CONTATOS DO VCF
     def addVcf(self):
         self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
@@ -2207,6 +2209,7 @@ class Ui_Form(object):
         self.__preencherContatos()
 
 
+#GRAVAR TODAS AS INFORMAÇÕES
     def __gravar(self):
         #MUDAR PATH
         self.conexao = sqlite3.connect(rf'{self.localContent}')
@@ -2246,7 +2249,6 @@ class Ui_Form(object):
                 hora_criada = dados[7]
                 nome_rotina = self.caixaDigitarNomeRotina.text()
                 executar_erro = self.radioSim.isChecked()
-                # seFlf.__coletarDados()
 
                 itemSelecionado = self.comboTipoDeEnvio_3.itemText(self.comboTipoDeEnvio_3.currentIndex())
 
@@ -2292,9 +2294,6 @@ class Ui_Form(object):
 
 
 
-                # for elemento in self.cursor.fetchall():
-
-
 
 
                 atualizarDados(cursor=self.cursor)
@@ -2308,7 +2307,7 @@ class Ui_Form(object):
 
 
 
-
+#PEGAR TODAS AS INFORMAÇÕES PASSADAS
     def __coletarDados(self):
         # self.tipo_Remetente
         # self.qntd_Mensagens
@@ -2414,7 +2413,7 @@ class Ui_Form(object):
 
 
 
-
+#POPUP PARA CONFIRMAR VCF
     def __popupSimNao(self, titulo='Janela de confirmação', conteudo=''):
         try:
             self.widgetSimNao.setVisible(True)
@@ -2424,7 +2423,7 @@ class Ui_Form(object):
             self.widgetSimNao.setVisible(False)
 
 
-
+#DEF PARA ACHAR PATH DA IMAGEM
     def browseFileImage(self):
         dir = os.getcwd()
 
@@ -2440,7 +2439,7 @@ class Ui_Form(object):
             self.listaMensagensSalvas_3.addItem(msg_curta)
 
 
-
+#DEF PARA POPUPS DE ERRO
     def __popupErro(self, titulo='Erro', conteudo='Erro'):
         try:
             self.tituloAlerta.setText(titulo)
@@ -2451,7 +2450,7 @@ class Ui_Form(object):
             self.widgetErro.setVisible(False)
 
 
-
+# DEF PARA VER SE MENSAGEM JA PASSOU DO HORÁRIO
     def __horarioPassado(self):
        atual = arrow.now()
        self.dia_atual_formatado = atual.now(tzinfo=atual.tzinfo).format('MM/DD')
@@ -2478,7 +2477,7 @@ class Ui_Form(object):
                return True
 
 
-
+#DEF PARA VERIFICAR SE INFORMAÇÕES PASSADAS EM CADA PÁGINA ESTÃO DENTRO DOS PARÂMETROS
     def __verificar(self):
         try:
             currentIndex = self.stackedWidget_3.currentIndex()
@@ -2591,7 +2590,7 @@ class Ui_Form(object):
                 return False
 
 
-
+# DEF PARA VERIFICAR SE O NUMERO INSERIDO É VALIDO
     def __verificarNumero(self, num):
         num = str(num.replace(' ', '').replace('-', ''))
         if len(num) == 12 and num.isnumeric() is True:
@@ -2601,7 +2600,7 @@ class Ui_Form(object):
             return False
 
 
-
+# DEF PARA ADICIONAR OS DIAS SELECIONADOS NO CALENDÁRIO
     def adicionarDiasCalendario(self):
         dia = self.calendario_3.selectedDate().day()
         mes = self.calendario_3.selectedDate().month()
@@ -2627,7 +2626,7 @@ class Ui_Form(object):
 
 
 
-
+# DEF PARA ADICIONAR DIAS PERSONALIZADOS
     def adicionarDiasPersonalizados(self, item):
         if self.comboDias_3.count() != 0:
             dia = self.comboDias_3.itemText(self.comboDias_3.currentIndex())
@@ -2635,7 +2634,7 @@ class Ui_Form(object):
             self.comboDias_3.removeItem(self.comboDias_3.currentIndex())
 
 
-
+# DEF PARA HABILITAR A OPCAO DE SELECIONAR DIAS PERSONALIZADOS E CALENDÁRIOS
     def habilitarPersonalizadaECalendario(self, item):
         if item == 3:
             self.stackedWidgetDataEHora.setCurrentIndex(1)
@@ -2669,7 +2668,7 @@ class Ui_Form(object):
 
 
 
-
+# DEF PARA ABRIR E FECHAR O POPUP DE ADICIONAR VARIÁVEL
     def abrirPopupVariavel(self):
         if self.widgetAddVariaveis.isVisible():
                 self.widgetAddVariaveis.setVisible(False)
@@ -2677,7 +2676,7 @@ class Ui_Form(object):
                 self.widgetAddVariaveis.setVisible(True)
 
 
-
+# DEF PARA PARA SALVAR A VARIÁVEL
     def salvarVariavel(self):
         self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
@@ -2701,7 +2700,7 @@ class Ui_Form(object):
 
 
 
-
+# DEF PARA SALVAR O REMETENTE SELECIONADO
     def salvarRemetentes(self):
         self.listaRemetentesSelecionados.clear()
         itemsSelecionados = self.listaContatos_3.selectedItems()
@@ -2715,7 +2714,7 @@ class Ui_Form(object):
 
 
 
-
+# DEF QUE CRIA O CONTATO DIGITADO
     def criarContato(self):
         num_add = self.caixaNomeDoContatoPersonalizado_4.text()
         nome_add = self.caixaNomePersonalizado_4.text().strip()
@@ -2730,7 +2729,6 @@ class Ui_Form(object):
             except:
                 pass
 
-            # self.cursor.execute('SELECT * FROM mensagem ORDER BY horario DESC')
             self.conexao.commit()
             self.cursor.close()
             self.conexao.close()
@@ -2740,6 +2738,7 @@ class Ui_Form(object):
             self.__popupErro('Erro ao criar contato', 'O nome não foi preenchido\nou o número está incorreto')
 
 
+#DEF QUE CRIA O GRUPO DIGITADO
     def criarGrupo(self):
         self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
@@ -2757,7 +2756,7 @@ class Ui_Form(object):
         self.checkGrupo()
 
 
-
+# DEF PARA O CLIQUE DUPLO DE VARIÁVEIS PERSONALIZADAS
     def cliqueDuploVariavel(self, item):
 
         variavel = '('+self.listaVariaveis_3.currentItem().text()+')'
@@ -2773,7 +2772,7 @@ class Ui_Form(object):
         self.caixaMensagens_3.insertPlainText(texto)
 
 
-
+#DEF PARA SELECIONAR VARIAVEIS
     def selecionarVariaveis(self):
         texto = self.caixaMensagens_3.toPlainText()
         if "/" in texto:
@@ -2783,17 +2782,16 @@ class Ui_Form(object):
             self.listaVariaveis_3.setVisible(False)
 
 
-
+#DEF PARA AVANÇAR DE PÁGINAS
     def avancar(self):
         if self.__verificar() is not False:
                 self.barraMomento_3.setValue(self.barraMomento_3.value() + 32)
                 index = self.stackedWidget_3.currentIndex()
                 self.stackedWidget_3.setCurrentIndex(index + 1)
-        #  self.coletarDados()
 
 
 
-
+#DEF PARA PREENCHER OS GRUPOS DO BANCO DE DADOS
     def __preencherGrupos(self):
         self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
@@ -2809,6 +2807,7 @@ class Ui_Form(object):
         self.conexao.close()
 
 
+#DEF PARA PREENCHER OS CONTATOS DO BANCO DE DADOS
     def __preencherContatos(self):
         self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
         self.cursor = self.conexao.cursor()
@@ -2827,6 +2826,7 @@ class Ui_Form(object):
         self.conexao.close()
 
 
+#DEF PARA PREENCHER VARIÁVEIS DO BANCO DE DADOS
     def __preencherVariaveis(self):
 
         self.conexao = sqlite3.connect(rf'{self.InterfaceDB}')
@@ -2841,7 +2841,6 @@ class Ui_Form(object):
         except:
             self.__popupErro('Erro no importe', 'Erro importar variáveis')
 
-        # self.cursor.execute('SELECT * FROM mensagem ORDER BY horario DESC')
         self.conexao.commit()
         self.cursor.close()
         self.conexao.close()
@@ -2849,7 +2848,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA ABRIR E FECHAR POPUPS DOS CONTATOS
     def abrirPopupContato(self):
         if self.widgetAddContato.isVisible():
             self.widgetAddContato.setVisible(False)
@@ -2860,7 +2859,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA ABRIR E FECHAR POPUP DOS GRUPOS
     def abrirPopupGrupo(self):
         if self.widgetAddGrupo.isVisible():
             self.caixaNumeroPersonalizado_5.clear()
@@ -2872,7 +2871,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA MOSTRAR OS BOTOES DE ALTERNAR SEQUÊNCIA DE MENSAGENS
     def mostrarBotoesRemetentes(self):
         item = self.listaRemetentesSelecionados.currentItem()
         countList = self.listaRemetentesSelecionados.count()
@@ -2898,14 +2897,14 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA MOVER ITEM PRA CIMA
     def moverItemPraCimaRemetentes(self):
         row = self.listaRemetentesSelecionados.currentRow()
         item = self.listaRemetentesSelecionados.takeItem(row)
         self.listaRemetentesSelecionados.insertItem(row - 1, item)
 
 
-
+#DEF PARA MOVER ITEM PRA BAIXO
     def moverItemPraBaixoRemetentes(self):
         row = self.listaRemetentesSelecionados.currentRow()
         item = self.listaRemetentesSelecionados.takeItem(row)
@@ -2913,7 +2912,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA MOSTRAR OS BOTÕES DAS MENSAGENS
     def mostrarBotoesMensagens(self):
         if self.listaMensagensSalvas_3.count() != 0:
             self.botaoMensagemApagar.setVisible(True)
@@ -2945,7 +2944,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA MOVER MENSAGENS PRA CIMA
     def moverItemPraCimaMensagens(self):
         row = self.listaMensagensSalvas_3.currentRow()
         item = self.listaMensagensSalvas_3.takeItem(row)
@@ -2953,7 +2952,7 @@ class Ui_Form(object):
         self.__atualizarOrdemMensagens()
 
 
-
+#DEF PARA MOVER MENSAGENS PRA BAIXO
     def moverItemPraBaixoMensagens(self):
         row = self.listaMensagensSalvas_3.currentRow()
         item = self.listaMensagensSalvas_3.takeItem(row)
@@ -2962,7 +2961,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA ATUALIZAR A ORDEM DAS MENSAGENS CASO MUDE A SEQUÊNCIA
     def __atualizarOrdemMensagens(self):
         msgsBackup = list(self.mensagensNaoFormatadas)
         self.mensagensNaoFormatadas.clear()
@@ -2978,7 +2977,7 @@ class Ui_Form(object):
                       break
 
 
-
+#DEF PARA ELIMINAR MENSAGEM CASO APAGUE
     def eliminarItemListaMensagens(self):
         item = self.listaMensagensSalvas_3.currentItem()
         self.listaMensagensSalvas_3.takeItem(self.listaMensagensSalvas_3.indexFromItem(item).row())
@@ -2986,14 +2985,14 @@ class Ui_Form(object):
         self.mostrarBotoesMensagens()
 
 
-
+#DEF PARA ELIMINAR CONTATO
     def eliminarItemListaContatos(self):
         item = self.listaContatos_3.currentItem()
         self.listaContatos_3.takeItem(self.listaContatos_3.indexFromItem(item).row())
 
 
 
-
+#DEF PARA ELIMINAR DIA DA ROTINA PERSONALIZADA
     def eliminarItemListaPersonalizado(self):
             item = self.listaDiasPersonalizado_3.currentItem().text()
 
@@ -3003,17 +3002,16 @@ class Ui_Form(object):
             self.listaDiasPersonalizado_3.takeItem(self.listaDiasPersonalizado_3.indexFromItem(itemQ).row())
 
 
-
+#DEF PARA ELIMINAR DIA DA LISTA DE CALENDÁRIO
     def eliminarItemListaCalendario(self):
         item = self.listaDiasSelecionados_3.currentItem()
         self.listaDiasSelecionados_3.takeItem(self.listaDiasSelecionados_3.indexFromItem(item).row())
 
 
-
+#DEF PARA SALVAR MENSAGEM
     def salvar_msg(self):
         if self.caixaMensagens_3.toPlainText().strip() != '':
             msg = self.caixaMensagens_3.toPlainText()
-            # item = QtWidgets.QListWidgetItem()
             self.mensagensNaoFormatadas.append(msg)
             msg_format = msg+"..."
             self.listaMensagensSalvas_3.addItem(msg_format)
@@ -3023,7 +3021,7 @@ class Ui_Form(object):
             self.__popupErro('Erro ao salvar mensagem', 'A mensagem não possui informações')
 
 
-
+#DEF PARA VOLTAR PAGINA
     def voltar(self):
         index = self.stackedWidget_3.currentIndex()
         self.stackedWidget_3.setCurrentIndex(index - 1)
@@ -3031,7 +3029,7 @@ class Ui_Form(object):
                 self.barraMomento_3.setValue(self.barraMomento_3.value() - 32)
 
 
-
+#DEF DE FILTRO
     def filtrar(self):
         filtro = self.caixaFiltrarRemetentes.text()
 
@@ -3062,7 +3060,7 @@ class Ui_Form(object):
 
 
 
-
+#DEF PARA MOSTRAR BOTOES DE GRUPOS
     def checkGrupo(self):
         self.botaoAddGrupo_4.setVisible(True)
         self.botaoAddContato_3.setVisible(False)
@@ -3072,7 +3070,7 @@ class Ui_Form(object):
         self.__preencherGrupos()
 
 
-
+#DEF PARA MOSTRAR BOTOES DE CONTATOS
     def checkContato(self):
         self.botaoAddGrupo_4.setVisible(False)
         self.botaoAddContato_3.setVisible(True)
@@ -3082,10 +3080,11 @@ class Ui_Form(object):
         self.__preencherContatos()
 
 
-
+#DEF PARA MINIMIZAR
     def minimizar(self):
         self.frame_7.showMinimized()
 
+#DEF PARA FECHAR POPUP
     def fechar(self):
         self.frame_7.close()
         self.widgetErro.close()
