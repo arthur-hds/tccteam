@@ -44,11 +44,11 @@ class Mensagem(object):
         # FAZ ESPERAR O USUARIO LOGAR COM O CELULAR // XPATH = HEADER DO USUARIO
         try:
             esperar = WebDriverWait(driver=self.driver, timeout=50).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
+                EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/div/span')))
         except:
             self.driver.refresh()
             esperar = WebDriverWait(driver=self.driver, timeout=100).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[3]/header/div[1]/div/div/span')))
+                EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/div/span')))
 
         sleep(3)
 
@@ -150,7 +150,7 @@ class Mensagem(object):
             if self.midia == 'SIM' and "C:" in j[:3]:
 
                 self.driver.find_element(By.XPATH,
-                                         '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').click()
+                                         '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').click()
 
                 try:
 
@@ -159,12 +159,12 @@ class Mensagem(object):
                     sleep(1)
 
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
+                                             '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
                         Keys.CONTROL + 'v')
 
                     sleep(4)
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div').click()
+                                             '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]').click()
                     sleep(5)
 
                 except:
@@ -177,19 +177,20 @@ class Mensagem(object):
                     j = j.split('\n')
                     for msgCortada in j:
                         self.driver.find_element(By.XPATH,
-                                                 '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
+                                                 '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
+                                                ##'/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[1]'
                             msgCortada, Keys.SHIFT + Keys.ENTER)
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
+                                             '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
                         Keys.ENTER)
                     sleep(2)
 
                 else:
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
+                                             '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
                         j)
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
+                                             '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').send_keys(
                         Keys.ENTER)
                     sleep(2)
 
@@ -207,8 +208,8 @@ class Mensagem(object):
 
 
 
-PathlocalContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-PathInterface = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\InterfaceDB.db'
+PathlocalContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
+PathInterface = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
 
 conexao = sqlite3.connect(PathlocalContent)
 cursor = conexao.cursor()

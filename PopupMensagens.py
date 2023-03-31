@@ -2170,9 +2170,8 @@ class Ui_Form(object):
 
         Interface = f'{os.getcwd()}'
 
-
-        self.localContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-        self.InterfaceDB = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\InterfaceDB.db'
+        self.localContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
+        self.InterfaceDB = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
 
         conexao = sqlite3.connect(rf'{self.localContent}')
         cursor = conexao.cursor()

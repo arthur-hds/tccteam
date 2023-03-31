@@ -25,8 +25,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         MainWindow.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
-        self.localContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-        self.InterfaceDB = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
+        self.localContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
+        self.InterfaceDB = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
         self.InformacoesEPath()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")

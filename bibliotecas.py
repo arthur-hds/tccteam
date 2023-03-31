@@ -6,8 +6,9 @@ import arrow
 import os
 
 
-localContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-InterfaceDB = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
+localContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
+InterfaceDB = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
+
 
 def horarios():
     atual = arrow.now()
@@ -381,7 +382,10 @@ def criarRotinaNormal(cursor):
 
     horario = info[1]
     data = ast.literal_eval(info[2])[0]
-    data = f'{data[3:]}/{data[:2]}'
+    if len(data) == 5:
+        data = f'{data[3:]}/{data[:2]}'
+    else:
+        data = f'{data[2:]}/0{data[:1]}'
 
 
     cursor.execute('SELECT * FROM informacoes')
@@ -391,7 +395,7 @@ def criarRotinaNormal(cursor):
     __apagarRotina('OneTickMensagemNormal')
 
     rotina = subprocess.run(
-        f'schtasks /create /tn OneTickMensagemNormal /tr {pasta}  /SC ONCE /ST {horario} /SD {data}/2022 ', shell=True,
+        f'schtasks /create /tn OneTickMensagemNormal /tr {pasta}  /SC ONCE /ST {horario} /SD {data}/2023 ', shell=True,
     text=True)
 
 
@@ -514,9 +518,15 @@ def atualizarRotinaMensalInterface(cursor):
 def atualizarRotinaNormalInterface(cursor):
     info = extrairMensagensEnvio(cursor)[0]
 
+
+
     horario = info[1]
     data = ast.literal_eval(info[2])[0]
-    data = f'{data[3:]}/{data[:2]}'
+    if len(data) == 5:
+        data = f'{data[3:]}/{data[:2]}'
+    else:
+        data = f'{data[2:]}/0{data[:1]}'
+
 
 
     cursor.execute('SELECT * FROM informacoes')
@@ -527,7 +537,7 @@ def atualizarRotinaNormalInterface(cursor):
     __apagarRotina('OneTickMensagemNormal')
 
     rotina = subprocess.run(
-        f'schtasks /create /tn OneTickMensagemNormal /tr {pasta}  /SC ONCE /ST {horario} /SD {data}/2022 ', shell=True,
+        f'schtasks /create /tn OneTickMensagemNormal /tr {pasta}  /SC ONCE /ST {horario} /SD {data}/2023 ', shell=True,
     text=True)
 
 

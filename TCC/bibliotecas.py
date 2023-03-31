@@ -6,8 +6,11 @@ import arrow
 import os
 
 
-localContent = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db'
-InterfaceDB = r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\Interface\InterfaceDB.db'
+
+
+
+localContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
+InterfaceDB = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
 
 def horarios():
     atual = arrow.now()
@@ -374,7 +377,10 @@ def criarRotinaNormal(cursor):
 
     horario = info[1]
     data = ast.literal_eval(info[2])[0]
-    data = f'{data[3:]}/{data[:2]}'
+    if len(data) == 5:
+        data = f'{data[3:]}/{data[:2]}'
+    else:
+        data = f'{data[2:]}/0{data[:1]}'
 
 
     cursor.execute('SELECT * FROM informacoes')
@@ -508,8 +514,10 @@ def atualizarRotinaNormalInterface(cursor):
 
     horario = info[1]
     data = ast.literal_eval(info[2])[0]
-    data = f'{data[3:]}/{data[:2]}'
-
+    if len(data) == 5:
+        data = f'{data[3:]}/{data[:2]}'
+    else:
+        data = f'{data[2:]}/0{data[:1]}'
 
     cursor.execute('SELECT * FROM informacoes')
 
