@@ -2147,7 +2147,7 @@ class Ui_Form(object):
 
     def __gravar(self):
         #MUDAR PATH
-        self.conexao = sqlite3.connect(r'C:\Users\Usuario\PycharmProjects\Git\tccteam\TCC\localContent.db')
+        self.conexao = sqlite3.connect(r'C:\Users\arthur_h_de-souza\PycharmProjects\tccteam\TCC\localContent.db')
         self.cursor = self.conexao.cursor()
 
         mensagens = extrairMensagens(cursor=self.cursor)

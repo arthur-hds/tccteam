@@ -87,34 +87,44 @@ class Mensagem(object):
                 # MANDAR PARA GRUPOS
                 for i in self.ctt:
                     WebDriverWait(driver=self.driver, timeout=100).until(EC.element_to_be_clickable(
-                        (By.XPATH, '/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]')))
+                        (By.XPATH, '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]')))
+
 
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]').click()
+                                             '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]').click()
                     sleep(1)
 
                     # Esperar até o nome do grupo for digitado
                     while self.driver.find_element(By.XPATH,
-                                                   '/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]').text != i:
+                                                   '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]/div/div[1]/p').text != i:
                         sleep(1)
+
+                        a = self.driver.find_element(By.XPATH,
+                                                     '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]/div/div[1]/p').text
                         self.driver.find_element(By.XPATH,
-                                                 '/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]').send_keys(
+                                                 '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]/div/div[1]/p').send_keys(
+
                             i)
+                        a = self.driver.find_element(By.XPATH,
+                                                   '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]/div/div[1]/p').text
+
 
                     # ESPERAR ATÉ ACHAR A BARRA ONDE APARECE O GRUPO
                     WebDriverWait(driver=self.driver, timeout=15).until(EC.element_to_be_clickable(
                         (By.XPATH,
-                         '/html/body/div[1]/div/div/div[3]/div/div[2]/div[1]/div/div/div[1]/div/div/div/div[2]')))
+                         '/html/body/div[1]/div/div/div[3]/div[1]')))
+
 
                     self.driver.find_element(By.XPATH,
-                                             '/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]').send_keys(
+                                             '/html/body/div[1]/div/div/div[4]/div/div[1]/div/div/div[2]/div/div[1]/p').send_keys(
                         Keys.ENTER)
                     sleep(2)
 
                     # ESPERAR PARA APARECER CAIXA DE TEXTO PARA DIGITAR
                     WebDriverWait(driver=self.driver, timeout=20).until(EC.element_to_be_clickable(
                         (By.XPATH,
-                         '/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]')))
+                         '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]')))
+
 
                     self.enviandoMensagem(i)
 
@@ -150,7 +160,7 @@ class Mensagem(object):
             if self.midia == 'SIM' and "C:" in j[:3]:
 
                 self.driver.find_element(By.XPATH,
-                                         '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').click()
+                                         '/ html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]').click()
 
                 try:
 
@@ -208,8 +218,8 @@ class Mensagem(object):
 
 
 
-PathlocalContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
-PathInterface = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
+PathlocalContent = r'C:\Users\arthur_h_de-souza\PycharmProjects\tccteam\TCC\localContent.db'
+PathInterface = r'C:\Users\arthur_h_de-souza\PycharmProjects\tccteam\InterfaceDB.db'
 
 conexao = sqlite3.connect(PathlocalContent)
 cursor = conexao.cursor()

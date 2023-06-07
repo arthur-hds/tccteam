@@ -9,8 +9,8 @@ import os
 
 
 
-localContent = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\TCC\localContent.db'
-InterfaceDB = r'C:\Users\arthur_h_de-souza\Documents\GitHub\tccteam\InterfaceDB.db'
+localContent = r'C:\Users\arthur_h_de-souza\PycharmProjects\tccteam\TCC\localContent.db'
+InterfaceDB = r'C:\Users\arthur_h_de-souza\PycharmProjects\tccteam\InterfaceDB.db'
 
 def horarios():
     atual = arrow.now()
